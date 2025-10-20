@@ -1,0 +1,33 @@
+# Node / editor / OS ignores
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Env files
+.env
+.env.*
+
+# Media large files (consider Git LFS)
+# Videos are tracked with Git LFS. If you do NOT use LFS, uncomment the line below to ignore local Videos.
+# Videos/*.mp4
+*.zip

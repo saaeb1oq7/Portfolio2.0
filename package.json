@@ -1,0 +1,27 @@
+{
+  "name": "saaeb-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Saaeb Saad",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saaeb1oq7/Portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saaeb1oq7/Portfolio/issues"
+  },
+  "homepage": "https://github.com/saaeb1oq7/Portfolio#readme",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "lint:js": "eslint . --ext .js",
+    "format": "prettier --write ."
+  },
+  "author": "Saaeb Saad",
+  "license": "MIT",
+  "keywords": ["portfolio", "saaeb", "frontend", "javascript", "videos"],
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "eslint": "^8.50.0",
+    "prettier": "^2.8.8"
+  }
+}

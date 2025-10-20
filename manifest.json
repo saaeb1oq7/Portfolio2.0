@@ -1,0 +1,13 @@
+{
+  "name": "Saaeb Saad — Portfolio",
+  "short_name": "Saaeb",
+  "description": "Front-end and Game Developer portfolio showcasing projects and skills.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050014",
+  "theme_color": "#72a1de",
+  "icons": [
+    {"src":"./Images/cropped_circle_image.png","sizes":"192x192","type":"image/png"},
+    {"src":"./Images/cropped_circle_image.png","sizes":"512x512","type":"image/png"}
+  ]
+}

@@ -1,0 +1,271 @@
+/*
+    style.css — reorganized and optimized
+    Table of Contents
+    1. Reset & Base
+    2. CSS Variables
+    3. Layout
+    4. Header & Navigation
+    5. Hero
+    6. Info / Cards
+    7. Projects
+    8. Skills
+    9. Contact
+   10. Footer
+   11. Utilities
+   12. Animations
+   13. Media Queries
+*/
+
+/* 1. Reset & Base */
+:root{
+    --primary-color:#72a1de;
+    --primary-color-alpha:#72a1de88;
+    --secondary-color:#22a8f5;
+    --bg-dark:rgba(8,0,32,0.72);
+    --bg-overlay:rgba(255,255,255,0.06);
+    --text-light:#cbd5e1;
+    --text-white:#ffffff;
+    --border-radius-sm:10px;
+    --border-radius-md:20px;
+    --border-radius-lg:50px;
+    --transition-speed:0.3s;
+    --box-shadow-sm:0 2px 8px rgba(0,0,0,0.2);
+    --z-header:1000;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#050014;color:var(--text-light);-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+/* Visible focus for keyboard users */
+:focus{outline:3px solid var(--primary-color);outline-offset:2px}
+
+/* Skip-to-content link (accessibility) */
+.skip-link{
+  position:absolute;
+  left:1rem;
+  top:-3rem; /* off-canvas by default */
+  background:var(--primary-color);
+  color:var(--text-white);
+  padding:0.5rem 0.75rem;
+  border-radius:8px;
+  z-index:1200;
+  transition:top 0.18s ease;
+}
+.skip-link:focus{top:1rem}
+
+/* screen reader only */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* 2. Layout */
+.container{position:relative;min-height:100vh}
+.back-vid{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;filter:brightness(.45);pointer-events:none}
+/* Placeholder while background video hasn't loaded to avoid blank area */
+.back-vid.video-loading{background:linear-gradient(180deg, rgba(8,0,32,0.9), rgba(5,0,20,0.95));}
+.back-vid.video-loaded{opacity:1;transition:opacity 400ms ease-in}
+
+/* Decorative blackhole box (bottom-right circular video) */
+.blackhole-box{
+  position:fixed;
+  right:1.25rem;
+  bottom:1.25rem;
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  overflow:hidden;
+  z-index:1;
+  pointer-events:none;
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+}
+.blackhole-box video{width:100%;height:100%;object-fit:cover;display:block}
+
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:clamp(0.75rem,2vw,1rem) clamp(1rem,4vw,2rem)}
+
+/* 3. Header & Navigation */
+.site-header{position:sticky;top:0;background:linear-gradient(180deg,rgba(5,0,20,0.6),transparent);backdrop-filter:blur(6px);z-index:var(--z-header)}
+.left{display:flex;align-items:center;gap:0.75rem;min-width:0}
+.logo{width:clamp(40px,10vw,48px);height:clamp(40px,10vw,48px);border-radius:50%}
+.site-title{font-size:clamp(1rem,2.5vw,1.125rem);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1}
+.name-highlight{color:var(--secondary-color)}
+
+.main-nav ul{display:flex;gap:1rem;list-style:none;margin:0;padding:0}
+.main-nav a{padding:0.5rem 0.75rem;border-radius:8px;transition:background var(--transition-speed)}
+.main-nav a:hover,.main-nav a:focus{background:var(--bg-overlay)}
+
+.box-icons{display:flex;align-items:center;gap:0.75rem}
+.box-icons a{color:var(--text-light);padding:0.5rem;border-radius:8px}
+.menu-icon{display:none;background:transparent;border:0;color:var(--text-light);font-size:1.25rem;display:flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:0.5rem;cursor:pointer}
+
+/* Logo wrapper interactive style */
+.logo-link{display:inline-block;transition:transform var(--transition-speed),box-shadow var(--transition-speed)}
+.logo-link:hover,.logo-link:focus-visible{transform:scale(1.05) rotate(-2deg);box-shadow:0 8px 24px rgba(0,0,0,0.25)}
+
+/* 4. Sidebar (mobile) */
+.sidebar{position:fixed;inset:0;left:-100%;width:280px;background:linear-gradient(180deg,rgba(8,0,32,0.95),rgba(8,0,32,0.9));padding:clamp(1.5rem,4vw,2rem);transition:left var(--transition-speed);z-index:1100}
+.sidebar[aria-hidden="false"]{left:0}
+.sidebar .close-icon{background:transparent;border:0;color:var(--text-light);font-size:1.25rem;display:flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:0.5rem;cursor:pointer;margin-bottom:1.5rem}
+.sidebar nav ul{list-style:none;padding:0}
+.sidebar nav a{display:flex;align-items:center;min-height:44px;padding:0.75rem 1rem;border-radius:6px}
+.sidebar .social-icons{display:flex;gap:1rem;margin-top:1rem}
+.sidebar .social-icons a{padding:0.5rem;min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+
+/* 5. Hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;padding:4rem 2rem}
+.hero-info{max-width:680px}
+.hero-info-title{display:flex;align-items:center;gap:0.5rem;font-weight:600}
+.text-gradient{background:linear-gradient(90deg,var(--primary-color),var(--secondary-color));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1rem;border-radius:12px;background:var(--primary-color);color:var(--text-white);border:0;cursor:pointer;transition:transform var(--transition-speed),box-shadow var(--transition-speed)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:var(--box-shadow-sm)}
+.hero-vid-box video{border-radius:12px;box-shadow:var(--box-shadow-sm);aspect-ratio:16/9}
+.hero-vid-box .video-loading{background:linear-gradient(180deg, rgba(8,0,32,0.95), rgba(5,0,20,0.9));}
+.hero-vid-box .video-loaded{animation:fadeIn 0.45s ease-in forwards}
+.scroll-down{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.04);margin:1rem auto;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.06);cursor:pointer}
+.scroll-down::after{content:"\2193";font-size:18px;color:var(--text-white);opacity:0.9}
+.scroll-down{animation:floatY 2s ease-in-out infinite alternate}
+
+/* 6. Info / Cards */
+.info-section{display:flex;flex-direction:column;align-items:center;width:80%;margin:4rem auto}
+.section-title{font-size:2rem;font-weight:700}
+.info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;padding:2rem}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1rem;border-radius:var(--border-radius-sm);box-shadow:var(--box-shadow-sm);transition:transform var(--transition-speed),box-shadow var(--transition-speed)}
+.card h3{margin-top:0}
+.card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,0.35)}
+
+/* 7. Projects */
+.my-projects{padding:4rem 2rem;max-width:1200px;margin:0 auto}
+.project-card{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:center;padding:2rem;border-bottom:1px solid rgba(255,255,255,0.02)}
+.project-vidbox{position:relative}
+.project-vidbox video{width:100%;height:auto;border-radius:12px;aspect-ratio:16/9}
+.project-vidbox .video-loading{background:linear-gradient(180deg, rgba(10,10,20,0.9), rgba(8,8,16,0.8));}
+.project-vidbox .video-loaded{animation:fadeIn 0.45s ease-in forwards}
+.hover-sign{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:var(--primary-color-alpha);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
+.hover-sign::before{content:"▶";color:var(--text-white);font-size:22px}
+.project-vidbox:hover .hover-sign{opacity:1}
+.project-info{padding:1rem}
+.project-info h3{margin:0 0 0.5rem 0;font-size:1.25rem}
+.project-info p{margin:0 0 1rem 0;line-height:1.6;color:var(--text-light)}
+
+/* 8. Skills */
+.skills-section{padding:2rem}
+.skills-box{display:grid;grid-template-columns:200px 1fr;gap:1rem;align-items:center}
+.skills-image{width:100%;border-radius:12px}
+.designer,.coder{background:var(--bg-overlay);padding:1rem;border-radius:var(--border-radius-sm);box-shadow:var(--box-shadow-sm);margin:0.75rem 0}
+.designer h3,.coder h3{margin:0 0 0.5rem 0}
+
+/* Slider / circular carousel */
+.slider{position:relative;--perspective:800px;transform-style:preserve-3d;perspective:var(--perspective)}
+.slider .list{position:relative;width:100%;height:var(--height);transform-style:preserve-3d;will-change:transform;animation:rotate3D 20s linear infinite}
+.slider .list .item{position:absolute;top:50%;left:50%;width:var(--width);height:var(--height);transform-origin:center center;display:flex;align-items:center;justify-content:center}
+.slider .list .item img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+.slider .list .item{--i: calc(var(--position) - 1);transform: rotateY(calc(var(--i) * 360deg / var(--quantity))) translateZ(240px) translateY(-50%) translateX(-50%)}
+
+/* 9. Contact */
+.contact-section{padding:2rem}
+.social-box{display:flex;flex-direction:column;gap:0.75rem;padding:1rem;background:var(--bg-overlay);border-radius:var(--border-radius-md);align-items:flex-start}
+.social-box a{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 0.75rem;border-radius:8px;transition:background var(--transition-speed),transform var(--transition-speed)}
+.social-box a:hover{background:rgba(255,255,255,0.03);transform:translateY(-3px)}
+.social-icons{display:flex;gap:0.5rem}
+.contact-box{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1.25rem;border-radius:12px;margin-top:1rem}
+.contact-box label{display:block;margin-top:0.75rem}
+.contact-box input,.contact-box textarea{width:100%;padding:0.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-light)}
+.input-message{min-height:120px;resize:vertical}
+.send-message{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1rem;border-radius:12px;background:linear-gradient(90deg,var(--secondary-color),var(--primary-color));color:var(--text-white);border:0;cursor:pointer;transition:transform var(--transition-speed)}
+.send-message:hover{transform:translateY(-3px)}
+
+/* 10. Footer */
+.site-footer{padding:2rem;text-align:center;border-top:1px solid rgba(255,255,255,0.03);margin-top:2rem}
+
+/* 11. Utilities */
+/* Animation utilities: initial states without will-change to avoid promoting layers prematurely */
+.autoBlur{opacity:0;transform:translateY(10px);filter:blur(10px)}
+.autoBlur.in-view{will-change:transform,opacity;animation:autoBlur 1s ease-out var(--delay, 0s) forwards}
+
+.autoDisplay{opacity:0;transform:translateY(30px)}
+.autoDisplay.in-view{will-change:opacity,transform;animation:autoDisplay 0.9s ease-out var(--delay, 0s) forwards}
+
+.fadeInRight{opacity:0;transform:translateX(50px)}
+.fadeInRight.in-view{will-change:transform,opacity;animation:fadeInRight 0.9s ease-out var(--delay, 0s) forwards}
+
+/* Staggering strategy:
+  Delays are controlled via the CSS custom property --delay which is set in JS based on
+  the visible order of elements within a semantic group. This avoids brittle nth-child
+  selectors that count all siblings. Example values: 0s, 0.08s, 0.16s, 0.24s...
+*/
+
+/* 12. Animations */
+@keyframes floatY{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+@keyframes autoBlur{0%{opacity:0;filter:blur(10px);transform:translateY(10px)}100%{opacity:1;filter:blur(0);transform:translateY(0)}}
+@keyframes autoDisplay{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeInRight{0%{opacity:0;transform:translateX(50px)}100%{opacity:1;transform:translateX(0)}}
+@keyframes rotate3D{from{transform:rotateY(0deg)}to{transform:rotateY(360deg)}}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Reduce expensive memory hints on background video unless necessary */
+.back-vid{will-change:auto}
+
+/* content-visibility for off-screen heavy elements */
+.slider, .blackhole-box{content-visibility:auto}
+
+/* Focus-visible refine */
+:focus-visible{outline:3px solid var(--primary-color);outline-offset:2px}
+
+/* 13. Media Queries */
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+@media (max-width:375px){
+    .header-inner{padding:0.75rem 1rem}
+    .left{min-width:0}
+    .site-title{flex-shrink:1;font-size:clamp(0.95rem,2.2vw,1.05rem)}
+    .box-icons a{padding:0.4rem}
+}
+
+@media (max-width:480px){
+    .blackhole-box{display:none}
+    /* logo clamp handles size */
+    .project-info h3{font-size:1.05rem}
+    .hero{padding:2rem 1rem}
+    .header-inner{gap:0.5rem}
+  .site-title{font-size:0.95rem}
+}
+
+@media (max-width:768px){
+    .skills-box{grid-template-columns:1fr}
+    .slider{transform:none;perspective:600px}
+    .project-card{grid-template-columns:1fr}
+    .social-box{flex-direction:row;flex-wrap:wrap}
+    .designer,.coder{margin:0.5rem 0}
+    .project-info{padding:0.75rem}
+}
+
+/* merged 480px rules to ensure consistent header spacing and touch targets */
+@media (max-width:480px){
+  .blackhole-box{display:none}
+  /* logo clamp handles size */
+  .project-info h3{font-size:1.05rem}
+  .hero{padding:2rem 1rem}
+  .header-inner{gap:0.5rem}
+  .box-icons a{padding:0.5rem}
+  /* ensure menu button remains an accessible touch area */
+  .menu-icon{width:44px;height:44px;min-width:44px;min-height:44px}
+}
+
+@media print{
+    .blackhole-box,.slider,video,.project-vidbox,.back-vid,.scroll-down{display:none}
+    .skip-link{display:none}
+    body{color:#000;background:#fff}
+    .card, .project-info{box-shadow:none;background:transparent}
+}
+
+/* Validation state */
+.is-invalid{box-shadow:0 0 0 3px rgba(255,80,80,0.12);border-color:rgba(255,80,80,0.7)}
+.error-message{color:#ffb4b4;font-size:0.9rem;margin-top:0.25rem}
+
+/* Hide hover overlay on devices that don't support hover */
+@media (hover: none) {
+  .hover-sign{display:none!important}
+}
