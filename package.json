@@ -5,12 +5,12 @@
   "main": "index.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/saaeb1oq7/Portfolio.git"
+    "url": "https://github.com/saaeb1oq7/Portfolio2.0.git"
   },
   "bugs": {
-    "url": "https://github.com/saaeb1oq7/Portfolio/issues"
+    "url": "https://github.com/saaeb1oq7/Portfolio2.0/issues"
   },
-  "homepage": "https://github.com/saaeb1oq7/Portfolio#readme",
+  "homepage": "https://github.com/saaeb1oq7/Portfolio2.0#readme",
   "scripts": {
     "start": "live-server --port=3000",
     "lint:js": "eslint . --ext .js",

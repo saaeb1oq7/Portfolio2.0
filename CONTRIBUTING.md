@@ -15,7 +15,7 @@ Coding style: keep HTML semantic, CSS modular and prefer variables, JavaScript E
 1. Clone the repository:
 
 ```powershell
-git clone https://github.com/saaeb1oq7/Portfolio.git
+git clone https://github.com/saaeb1oq7/Portfolio2.0.git
 git checkout main
 ```
 
@@ -44,6 +44,32 @@ npm run start
 	2. Add the file (e.g. `Videos/new-trailer.mp4`) and commit — LFS will manage the large binary.
 
 - If you intentionally do not want to store videos in the repo, host them externally (CDN or cloud storage) and update the `src`/`data-src` attributes in `index.html` to point to the external URLs instead of local `Videos/` paths.
+
+## Working with Animations
+
+The portfolio uses a viewport-triggered animation system with three primary classes:
+
+- **`autoBlur`** — Fade-in with blur resolution, used for cards and content
+- **`autoDisplay`** — Fade and slide-down effect, used for section titles
+- **`fadeInRight`** — Slide-in from right, used for project information
+
+When adding new sections or elements:
+
+1. Choose the appropriate animation class based on content type
+2. Add the `data-stagger-group` attribute to group related elements (e.g., `data-stagger-group="about"`)
+3. The IntersectionObserver in `app.js` automatically adds the `.in-view` class when elements enter the viewport, triggering the animation
+4. Animations automatically respect `prefers-reduced-motion` for accessibility
+
+**Example:** Adding an animated card to a new section:
+
+```html
+<article class="card autoBlur" data-stagger-group="my-section">
+  <h3>Card Title</h3>
+  <p>Card content...</p>
+</article>
+```
+
+For detailed documentation, see the **Animation System** section in `README.md`.
 
 ## Pull Request Process
 

@@ -4,7 +4,18 @@ const STATIC_ASSETS = [
   'style.css',
   'app.js',
   'manifest.json',
-  'Images/cropped_circle_image.png'
+  'Images/cropped_circle_image.png',
+  'Images/grid1.png',
+  'Images/grid2.png',
+  'Images/grid4.png',
+  'Images/digital brain (2).png',
+  'Images/Godot_Slider.png',
+  'Images/12.png',
+  'Images/6.png',
+  'Images/10.png',
+  'Images/1.png',
+  'Images/4.webp',
+  'Images/7.png'
 ];
 
 self.addEventListener('install', (e) => {
