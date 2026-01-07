@@ -25,6 +25,7 @@
     <meta name="theme-color" content="#72a1de">
 
     <link rel="icon" href="Images/cropped_circle_image.png" type="image/png">
+    <link rel="apple-touch-icon" href="Images/cropped_circle_image.png">
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
@@ -69,7 +70,7 @@
                     <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                         <i class='bx bxl-github'></i>
                     </a>
-                    <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+                    <a href="https://discordapp.com/users/1005177056050561066" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                         <i class='bx bxl-discord-alt'></i>
                     </a>
                     <a href="https://t.me/Saaeb" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
@@ -192,20 +193,27 @@
                     <div class="project-card">
                         <div class="project-info fadeInRight">
                             <h3 class="project-title">Interactive <span class="text-gradient">Web</span> Application</h3>
-                            <p class="project-description">A dynamic web application featuring real-time updates, modern UI components, and seamless user interactions.</p>
+                            <p class="project-description">A Website showcasing industrial school studies in Iraq with books and lieutenant. Making it easier to get useful information about industrial studies before entering.</p>
                             <button class="btn btn-primary view-project" data-project="project3">View Project</button>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
-                            <video id="projectVideo3" preload="none" aria-hidden="true">
-                                <source data-src="Videos/project2.mp4" type="video/mp4">
-                            </video>
-                            <div class="project-hover" aria-hidden="true">
-                                <i class="bx bx-play" aria-hidden="true"></i>
-                            </div>
+                            <img src="Images/project3.png" alt="Interactive Web Application project screenshot" loading="lazy" width="600" height="360">
                         </div>
                     </div>
-
+                </div>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-info fadeInRight">
+                            <h3 class="project-title">Ciphers<span class="text-gradient">-Please</span> </h3>
+                            <p class="project-description">A Game About Ciphering and unCiphering messages I worked as a UI developer in this game, but I had Exams so I didn't contribute well enough.</p>
+                            <button class="btn btn-primary view-project" data-project="project3">View Project</button>
+                        </div>
+                        
+                        <div class="project-visual" data-stagger-group="projects">
+                            <img src="Images/CiphersPleaseCover.jpg" alt="Interactive Web Application project screenshot" loading="lazy" width="600" height="360">
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -299,7 +307,9 @@
                     <div class="contact-form-container">
                         <p class="contact-intro">Looking for a new website or a game? Or want to collaborate on a project? Feel free to reach out — I'm open to new opportunities and challenges.</p>
 
-                        <form id="contactForm" class="contact-form" method="POST" action="#" novalidate aria-describedby="formStatus">
+                        <form id="contactForm" class="contact-form" name="contact" method="POST" data-netlify="true" action="/success.html" novalidate aria-describedby="formStatus">
+                            <input type="hidden" name="form-name" value="contact">
+                            
                             <div class="form-group">
                                 <label for="fullName">Full Name</label>
                                 <input id="fullName" name="name" type="text" placeholder="Your full name" required>
@@ -331,7 +341,7 @@
         </main>
 
         <footer class="site-footer">
-            <p>Copyrights © 2024 <span class="text-gradient">Saaeb Saad</span>. All rights <span class="text-gradient">reserved</span>.</p>
+            <p>Copyrights © 2025 <span class="text-gradient">Saaeb Saad</span>. All rights <span class="text-gradient">reserved</span>.</p>
         </footer>
     </div>
 

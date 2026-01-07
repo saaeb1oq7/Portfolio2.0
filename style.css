@@ -599,6 +599,14 @@ main {
     background: transparent;
 }
 
+.project-visual img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    aspect-ratio: 16/9;
+    background: transparent;
+}
+
 .project-visual video.video-loading {
     background: rgba(10, 10, 20, 0.8);
 }
