@@ -441,14 +441,14 @@ class PortfolioApp {
      * Configure with your public key from emailjs.com
      */
     initEmailJS() {
-        // Replace these with your actual EmailJS credentials from emailjs.com dashboard
-        const PUBLIC_KEY = 'YOUR_PUBLIC_KEY_HERE';
+        // EmailJS credentials from emailjs.com dashboard
+        const PUBLIC_KEY = 'z_lgbfOSm2ac8XI3v';
         
         if (PUBLIC_KEY && PUBLIC_KEY !== 'YOUR_PUBLIC_KEY_HERE') {
             emailjs.init(PUBLIC_KEY);
             // Store service and template IDs as class properties
-            this.emailServiceID = 'YOUR_SERVICE_ID_HERE';
-            this.emailTemplateID = 'YOUR_TEMPLATE_ID_HERE';
+            this.emailServiceID = 'service_a04dsep';
+            this.emailTemplateID = 'template_m70wi72';
         }
     }
 
