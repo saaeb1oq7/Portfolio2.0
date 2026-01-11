@@ -514,7 +514,7 @@ class PortfolioApp {
             form.reset();
         } catch (err) {
             console.error('EmailJS Error:', err);
-            this.elements.formStatus.textContent = 'Failed to send message. Please try emailing directly at saaaebkirkuk@gmail.com';
+            this.elements.formStatus.textContent = 'Failed to send message. Please try emailing directly at saaebkirkuk@gmail.com';
         }
     }
 
