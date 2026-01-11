@@ -35,6 +35,7 @@ class PortfolioApp {
         this.lazyLoadMedia();
         this.initScrollAnimations();
         this.initSkillSlider();
+        this.initEmailJS();
         
         // Defer non-critical initialization
         window.addEventListener('load', () => {
@@ -436,14 +437,30 @@ class PortfolioApp {
     }
 
     /**
+     * Initialize EmailJS
+     * Configure with your public key from emailjs.com
+     */
+    initEmailJS() {
+        // Replace these with your actual EmailJS credentials from emailjs.com dashboard
+        const PUBLIC_KEY = 'YOUR_PUBLIC_KEY_HERE';
+        
+        if (PUBLIC_KEY && PUBLIC_KEY !== 'YOUR_PUBLIC_KEY_HERE') {
+            emailjs.init(PUBLIC_KEY);
+            // Store service and template IDs as class properties
+            this.emailServiceID = 'YOUR_SERVICE_ID_HERE';
+            this.emailTemplateID = 'YOUR_TEMPLATE_ID_HERE';
+        }
+    }
+
+    /**
      * Contact form handling
      */
     async handleFormSubmit(e) {
         e.preventDefault();
         const form = e.target;
         const fields = [
-            { el: form.querySelector('#fullName'), name: 'name', required: true },
-            { el: form.querySelector('#email'), name: 'email', required: true },
+            { el: form.querySelector('#fullName'), name: 'from_name', required: true },
+            { el: form.querySelector('#email'), name: 'from_email', required: true },
             { el: form.querySelector('#message'), name: 'message', required: true }
         ];
 
@@ -464,7 +481,7 @@ class PortfolioApp {
             if (field.required && !value) {
                 hasError = true;
                 this.setFieldError(field.el, errorElement, 'This field is required.');
-            } else if (field.name === 'email' && value && !emailPattern.test(value)) {
+            } else if (field.name === 'from_email' && value && !emailPattern.test(value)) {
                 hasError = true;
                 this.setFieldError(field.el, errorElement, 'Please enter a valid email address.');
             }
@@ -479,13 +496,25 @@ class PortfolioApp {
         try {
             this.elements.formStatus.textContent = 'Sending...';
             
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 800));
+            // Check if EmailJS is configured
+            if (!this.emailServiceID || this.emailServiceID === 'YOUR_SERVICE_ID_HERE') {
+                this.elements.formStatus.textContent = 'Email service not configured. Please contact via email.';
+                console.warn('EmailJS not configured. Add your credentials to initEmailJS()');
+                return;
+            }
+
+            // Send using EmailJS
+            await emailjs.sendForm(
+                this.emailServiceID,
+                this.emailTemplateID,
+                form
+            );
             
-            this.elements.formStatus.textContent = 'Message sent — thank you!';
+            this.elements.formStatus.textContent = 'Message sent successfully! I\'ll get back to you soon.';
             form.reset();
         } catch (err) {
-            this.elements.formStatus.textContent = 'Failed to send message. Please try again later.';
+            console.error('EmailJS Error:', err);
+            this.elements.formStatus.textContent = 'Failed to send message. Please try emailing directly at saaebmuhammed@gmail.com';
         }
     }
 

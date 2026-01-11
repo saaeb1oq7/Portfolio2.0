@@ -307,18 +307,16 @@
                     <div class="contact-form-container">
                         <p class="contact-intro">Looking for a new website or a game? Or want to collaborate on a project? Feel free to reach out — I'm open to new opportunities and challenges.</p>
 
-                        <form id="contactForm" class="contact-form" name="contact" method="POST" data-netlify="true" action="/success.html" novalidate aria-describedby="formStatus">
-                            <input type="hidden" name="form-name" value="contact">
-                            
+                        <form id="contactForm" class="contact-form" name="contact" method="POST" novalidate aria-describedby="formStatus">
                             <div class="form-group">
                                 <label for="fullName">Full Name</label>
-                                <input id="fullName" name="name" type="text" placeholder="Your full name" required>
+                                <input id="fullName" name="from_name" type="text" placeholder="Your full name" required>
                                 <small class="error-message" aria-live="polite"></small>
                             </div>
 
                             <div class="form-group">
                                 <label for="email">Email Address</label>
-                                <input id="email" name="email" type="email" placeholder="Your email address" required>
+                                <input id="email" name="from_email" type="email" placeholder="Your email address" required>
                                 <small class="error-message" aria-live="polite"></small>
                             </div>
 
@@ -347,6 +345,7 @@
 
     <div id="status" class="sr-only" aria-live="polite"></div>
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="app.js" defer></script>
 </body>
 </html>
