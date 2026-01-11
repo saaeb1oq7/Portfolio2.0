@@ -448,7 +448,7 @@ class PortfolioApp {
             emailjs.init(PUBLIC_KEY);
             // Store service and template IDs as class properties
             this.emailServiceID = 'service_a04dsep';
-            this.emailTemplateID = 'template_m70wi72';
+            this.emailTemplateID = 'template_8wh8a1p';
         }
     }
 
