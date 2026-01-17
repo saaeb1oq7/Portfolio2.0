@@ -942,7 +942,10 @@ main {
     cursor: pointer;
     border: 1px solid rgba(114, 161, 222, 0.15);
 }
-
+.tech-item:nth-child(5) img{
+    max-width: 200px;
+    transform: scale(2, 2);
+}
 .tech-item:hover {
     background: rgba(114, 161, 222, 0.2);
     transform: scale(1.1) rotateY(10deg);
