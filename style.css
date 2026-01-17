@@ -538,13 +538,15 @@ main {
     }
 }
 
-.card {
+.card { 
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
     padding: var(--space-md);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
     transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
+
+
 
 .card:hover {
     transform: translateY(-6px);
@@ -564,6 +566,7 @@ main {
 
 .card img,
 .card video {
+    position: relative;
     border-radius: var(--radius-sm);
     margin-bottom: var(--space-sm);
     background: transparent;
@@ -572,13 +575,19 @@ main {
 /* Grid image borders */
 .card img[src*="grid1.png"],
 .card img[src*="grid2.png"] {
-    border: 1px solid #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
 }
 
 .card .btn-primary {
     margin-top: var(--space-sm);
 }
-
+.card:nth-child(4) img,
+.card:nth-child(4) video {
+    max-width: 600px;
+    position: relative;
+    right: 150px;
+}
 /* Projects Section */
 .projects-grid {
     border: purple;
