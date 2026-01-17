@@ -565,9 +565,9 @@ class PortfolioApp {
     handleProjectView(projectId) {
         // Map project IDs to URLs or external links
         const projectLinks = {
-            project1: 'https://github.com/saaeb1oq7/GameProject',
-            project2: 'https://github.com/saaeb1oq7/Portfolio2.0',
-            project3: 'https://github.com/saaeb1oq7'
+            project1: 'https://github.com/saaeb1oq7/Java',
+            project2: 'https://kis-web-tau.vercel.app',
+            project3: 'https://isaacsand.itch.io/ciphers-please'
             // Add more projects as needed
         };
 
