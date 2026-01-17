@@ -530,8 +530,9 @@ main {
 @media (min-width: 992px) {
     .about-cards > .card:first-child {
         grid-column: span 1;
-        max-width: 720px;
+        max-width: 560px;
         justify-self: center;
+        padding: calc(var(--space-md) * 0.8);
     }
 }
 
