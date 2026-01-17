@@ -1138,26 +1138,6 @@ main {
     background-clip: text;
     color: transparent;
     display: inline-block;
-    animation: colorShift 6s ease-in-out infinite;
-    background-size: 200% 200%;
-}
-
-@keyframes colorShift {
-    0% {
-        background: linear-gradient(135deg, #72a1de, #22a8f5);
-    }
-    25% {
-        background: linear-gradient(135deg, #22a8f5, #7c3aed);
-    }
-    50% {
-        background: linear-gradient(135deg, #7c3aed, #ec4899);
-    }
-    75% {
-        background: linear-gradient(135deg, #ec4899, #72a1de);
-    }
-    100% {
-        background: linear-gradient(135deg, #72a1de, #22a8f5);
-    }
 }
 
 /* Video Loading States */
