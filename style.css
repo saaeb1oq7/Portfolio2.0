@@ -569,6 +569,12 @@ main {
     background: transparent;
 }
 
+/* Grid image borders */
+.card img[src*="grid1.png"],
+.card img[src*="grid2.png"] {
+    border: 1px solid #ffffff;
+}
+
 .card .btn-primary {
     margin-top: var(--space-sm);
 }
