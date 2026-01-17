@@ -526,6 +526,13 @@ main {
     gap: var(--space-md);
 }
 
+/* Make the first about card larger on wider screens */
+@media (min-width: 992px) {
+    .about-cards > .card:first-child {
+        grid-column: span 2;
+    }
+}
+
 .card {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
     padding: var(--space-md);
