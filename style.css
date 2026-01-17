@@ -563,9 +563,12 @@ main {
 
 /* Projects Section */
 .projects-grid {
+    border: purple;
+    border-width: 2px;
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: 40px;
+    margin-bottom: 20px;
 }
 
 .project-card {
@@ -577,6 +580,63 @@ main {
     padding: var(--space-lg);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: visible;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--radius-md);
+    padding: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        transparent 40%, 
+        var(--primary-color) 45%, 
+        rgba(114, 161, 222, 0.6) 50%, 
+        var(--primary-color) 55%,
+        transparent 60%,
+        transparent 100%);
+    background-size: 200% 100%;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    box-shadow: inset 0 0 15px rgba(114, 161, 222, 0.2), 0 0 20px rgba(114, 161, 222, 0.4);
+    animation: smoothBorderFlow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.projects-grid:nth-of-type(1) .project-card::before {
+    animation-delay: 0s;
+}
+
+.projects-grid:nth-of-type(2) .project-card::before {
+    animation-delay: 2s;
+}
+
+.projects-grid:nth-of-type(3) .project-card::before {
+    animation-delay: 4s;
+}
+
+@keyframes smoothBorderFlow {
+    0% {
+        background-position: 0% 0%;
+        box-shadow: inset 0 0 15px rgba(114, 161, 222, 0.2), 0 0 15px rgba(114, 161, 222, 0.3);
+    }
+    50% {
+        background-position: 100% 0%;
+        box-shadow: inset 0 0 15px rgba(114, 161, 222, 0.3), 0 0 25px rgba(114, 161, 222, 0.5);
+    }
+    100% {
+        background-position: 200% 0%;
+        box-shadow: inset 0 0 15px rgba(114, 161, 222, 0.2), 0 0 15px rgba(114, 161, 222, 0.3);
+    }
 }
 
 .project-visual {
