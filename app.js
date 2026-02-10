@@ -31,16 +31,141 @@ class PortfolioApp {
      * Initialize all functionality
      */
     init() {
+        this.setupThemeToggle();
         this.setupEventListeners();
         this.lazyLoadMedia();
         this.initScrollAnimations();
+        this.initParallaxScroll();
         this.initSkillSlider();
+        this.initSkillReveal();
+        this.initFormAnimations();
         this.initEmailJS();
         
         // Defer non-critical initialization
         window.addEventListener('load', () => {
             this.registerServiceWorker();
         });
+    }
+
+    /**
+     * Setup Dark Mode Theme Toggle
+     */
+    setupThemeToggle() {
+        const themeToggle = document.getElementById('themeToggle');
+        if (!themeToggle) return;
+
+        // Get saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+        this.setTheme(initialTheme);
+
+        // Theme toggle button click handler
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            this.setTheme(newTheme);
+        });
+
+        // Listen for system preference changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            const savedTheme = localStorage.getItem('theme');
+            if (!savedTheme) {
+                this.setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    }
+
+    /**
+     * Set theme and persist to localStorage
+     * @param {string} theme - 'light' or 'dark'
+     */
+    setTheme(theme) {
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // Set theme attribute
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+
+        // Update button icon
+        if (themeToggle) {
+            const icon = themeToggle.querySelector('i');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'bx bx-sun' : 'bx bx-moon';
+            }
+        }
+
+        // Add transition class for smooth theme change
+        html.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        setTimeout(() => {
+            html.style.transition = '';
+        }, 300);
+    }
+
+    /**
+     * Reveal skill cards with a staggered animation when they enter view
+     */
+    initSkillReveal() {
+        const cards = Array.from(document.querySelectorAll('.skill-card'));
+        if (!cards.length) return;
+
+        const revealCard = (card) => {
+            if (card.classList.contains('is-visible')) return;
+            card.classList.add('is-visible');
+
+            const bars = Array.from(card.querySelectorAll('.skill-progress'));
+            bars.forEach((bar, i) => {
+                const pct = bar.dataset.percent || bar.getAttribute('aria-valuenow') || '0';
+                const final = String(pct).endsWith('%') ? pct : `${pct}%`;
+                const num = parseInt(String(final).replace('%', ''), 10) || 0;
+                setTimeout(() => {
+                    bar.style.width = final;
+                    bar.setAttribute('aria-valuenow', String(num));
+
+                    // insert/update label inside bar for better readability when there's space
+                    const parentItem = bar.closest('.skill-item');
+                    const skillLevelEl = parentItem?.querySelector('.skill-level');
+
+                    if (num >= 12) {
+                        // create or update label inside bar
+                        let label = bar.querySelector('.skill-progress-label');
+                        if (!label) {
+                            label = document.createElement('span');
+                            label.className = 'skill-progress-label';
+                            bar.appendChild(label);
+                        }
+                        label.textContent = final;
+                        parentItem?.classList.add('skill-item--label-inside');
+                        if (skillLevelEl) skillLevelEl.setAttribute('aria-hidden', 'true');
+                    } else {
+                        parentItem?.classList.remove('skill-item--label-inside');
+                        if (skillLevelEl) skillLevelEl.removeAttribute('aria-hidden');
+                    }
+                }, i * 80);
+            });
+        };
+
+        if (this.state.isReducedMotion) {
+            cards.forEach(c => revealCard(c));
+            return;
+        }
+
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        revealCard(entry.target);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.18 });
+
+            cards.forEach(card => observer.observe(card));
+        } else {
+            cards.forEach(c => revealCard(c));
+        }
     }
 
     /**
@@ -190,12 +315,55 @@ class PortfolioApp {
     }
 
     /**
-     * Lazy load videos with Intersection Observer
+     * Lazy load images and videos with Intersection Observer and blur-up effects
+     * Handles progressive image loading with modern formats and responsive srcsets
      */
     lazyLoadMedia() {
+        // Check for prefers-reduced-data for low-bandwidth users
+        const prefersReducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
+        
+        // Lazy load images with blur-up effect
+        const images = document.querySelectorAll('img.lazy-img');
         const videos = document.querySelectorAll('video');
-        if (!videos.length) return;
+        
+        if (!('IntersectionObserver' in window)) {
+            // Fallback for older browsers
+            images.forEach(img => img.classList.remove('img-loading'));
+            videos.forEach(video => {
+                const source = video.querySelector('source[data-src]');
+                if (source?.getAttribute('data-src')) {
+                    source.setAttribute('src', source.getAttribute('data-src'));
+                    video.load();
+                }
+            });
+            return;
+        }
 
+        // Image loading with blur-up effect
+        const loadImage = (img) => {
+            if (img.dataset._loaded) return;
+            
+            img.classList.add('img-loading');
+            const imageLoadHandler = () => {
+                img.classList.remove('img-loading');
+                img.classList.add('img-loaded');
+                img.dataset._loaded = '1';
+                img.removeEventListener('load', imageLoadHandler);
+                img.removeEventListener('error', errorHandler);
+            };
+            
+            const errorHandler = () => {
+                img.classList.remove('img-loading');
+                img.classList.add('img-loaded');
+                img.removeEventListener('load', imageLoadHandler);
+                img.removeEventListener('error', errorHandler);
+            };
+            
+            img.addEventListener('load', imageLoadHandler);
+            img.addEventListener('error', errorHandler);
+        };
+
+        // Video loading
         const loadVideo = (videoEl) => {
             if (videoEl.dataset._loaded) return;
 
@@ -204,7 +372,6 @@ class PortfolioApp {
             
             if (dataSrc) {
                 videoEl.classList.add('video-loading');
-                // Assign src only to the <source> element, then call load() on the video element
                 source.setAttribute('src', dataSrc);
                 videoEl.load();
 
@@ -219,82 +386,84 @@ class PortfolioApp {
                         videoEl.playbackRate = 2;
                     }
                     
-                    if (videoEl.getAttribute('data-autoplay') === 'true') {
+                    // Respect prefers-reduced-data for autoplay
+                    if (videoEl.getAttribute('data-autoplay') === 'true' && !prefersReducedData) {
                         videoEl.play().catch(() => {});
                     }
                 };
 
-                videoEl.addEventListener('canplaythrough', onCanPlay);
+                videoEl.addEventListener('canplaythrough', onCanPlay, { once: true });
             }
         };
 
-        if ('IntersectionObserver' in window) {
-            const highPriorityObserver = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadVideo(entry.target);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, { rootMargin: '400px' });
-
-            const defaultObserver = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadVideo(entry.target);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, { rootMargin: '200px' });
-
-            videos.forEach(video => {
-                const source = video.querySelector('source[data-src]');
-                if (source) {
-                    // Treat either data-priority="high" or fetchpriority="high" as high priority
-                    const isHigh = video.getAttribute('data-priority') === 'high' || video.getAttribute('fetchpriority') === 'high';
-                    if (isHigh) {
-                        highPriorityObserver.observe(video);
-                    } else {
-                        defaultObserver.observe(video);
-                    }
+        // Setup Intersection Observers with staggered loading
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadImage(entry.target);
+                    imageObserver.unobserve(entry.target);
                 }
             });
-        } else {
-            // Fallback for older browsers
-            videos.forEach(video => {
-                const source = video.querySelector('source[data-src]');
-                const dataSrc = source?.getAttribute('data-src');
-                if (dataSrc) {
-                    // Set source src and load the video element — avoid assigning video.src directly to prevent redundant assignment
-                    source.setAttribute('src', dataSrc);
-                    video.load();
+        }, { rootMargin: '50px', threshold: 0.01 });
+
+        const highPriorityVideoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadVideo(entry.target);
+                    highPriorityVideoObserver.unobserve(entry.target);
                 }
             });
-        }
+        }, { rootMargin: prefersReducedData ? '0px' : '400px' });
+
+        const defaultVideoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadVideo(entry.target);
+                    defaultVideoObserver.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: prefersReducedData ? '0px' : '200px' });
+
+        // Observe images
+        images.forEach(img => imageObserver.observe(img));
+
+        // Observe videos with priority handling
+        videos.forEach(video => {
+            const source = video.querySelector('source[data-src]');
+            if (source) {
+                const isHigh = video.getAttribute('data-priority') === 'high' || video.getAttribute('fetchpriority') === 'high';
+                if (isHigh) {
+                    highPriorityVideoObserver.observe(video);
+                } else {
+                    defaultVideoObserver.observe(video);
+                }
+            }
+        });
     }
 
     /**
-     * Video interaction handling
+     * Video interaction handling with smooth animations
      */
     setupVideoInteractions() {
         const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const prefersReducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
 
-        if (!isCoarsePointer) {
-            // Desktop hover behavior
+        if (!isCoarsePointer && !prefersReducedData) {
+            // Desktop hover behavior with smooth transitions
             document.addEventListener('mouseover', (e) => {
                 const video = e.target.closest('video');
                 if (video?.closest('.project-visual')) {
                     this.handleVideoHover(video, true);
                 }
-            });
+            }, { passive: true });
 
             document.addEventListener('mouseout', (e) => {
                 const video = e.target.closest('video');
                 if (video?.closest('.project-visual')) {
                     this.handleVideoHover(video, false);
                 }
-            });
-        } else {
+            }, { passive: true });
+        } else if (isCoarsePointer) {
             // Mobile touch behavior
             document.addEventListener('click', (e) => {
                 const visual = e.target.closest('.project-visual');
@@ -322,12 +491,39 @@ class PortfolioApp {
                     video.addEventListener('canplay', () => video.play().catch(() => {}), { once: true });
                 }
             }
-            video.closest('.project-visual').querySelector('.project-hover')?.classList.add('active');
+            video.style.animation = 'playFade 0.4s ease-out';
+            video.closest('.project-visual')?.querySelector('.project-hover')?.classList.add('active');
         } else {
             video.pause();
             try { video.currentTime = 0; } catch (err) {}
-            video.closest('.project-visual').querySelector('.project-hover')?.classList.remove('active');
+            video.style.animation = 'none';
+            video.closest('.project-visual')?.querySelector('.project-hover')?.classList.remove('active');
         }
+    }
+
+    /**
+     * Initialize parallax scroll effects for depth and motion
+     */
+    initParallaxScroll() {
+        if (this.state.isReducedMotion) return;
+
+        const parallaxElements = document.querySelectorAll('[data-parallax]');
+        if (!parallaxElements.length) return;
+
+        let scrollAnimationId;
+        const handleParallaxScroll = () => {
+            parallaxElements.forEach(el => {
+                const speed = parseFloat(el.dataset.parallax) || 0.5;
+                const scrolled = window.pageYOffset;
+                const yPos = scrolled * speed;
+                
+                requestAnimationFrame(() => {
+                    el.style.transform = `translateY(${yPos}px)`;
+                });
+            });
+        };
+
+        document.addEventListener('scroll', handleParallaxScroll, { passive: true });
     }
 
     /**
@@ -338,7 +534,7 @@ class PortfolioApp {
 
         try {
             const groups = {};
-            const selectors = ['.autoBlur', '.autoDisplay', '.fadeInRight'];
+            const selectors = ['.autoBlur', '.autoDisplay', '.fadeInRight', '.form-group', '.skill-card', '.project-card'];
             
             // Group elements by stagger group
             selectors.forEach(sel => {
@@ -353,7 +549,10 @@ class PortfolioApp {
             const step = 0.08;
             Object.values(groups).forEach(groupEls => {
                 groupEls.forEach((el, idx) => {
-                    el.style.setProperty('--delay', `${(idx * step).toFixed(2)}s`);
+                    const existingDelay = el.style.getPropertyValue('--delay');
+                    if (!existingDelay) {
+                        el.style.setProperty('--delay', `${(idx * step).toFixed(2)}s`);
+                    }
                 });
             });
 
@@ -364,7 +563,7 @@ class PortfolioApp {
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.2 });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
             // Observe all grouped elements
             Object.values(groups).forEach(groupEls => {
@@ -438,6 +637,24 @@ class PortfolioApp {
             }, { threshold: 0.2 });
             
             observer.observe(slider);
+        }
+    }
+
+    /**
+     * Initialize form animations with staggered reveals
+     */
+    initFormAnimations() {
+        const formGroups = document.querySelectorAll('.form-group');
+        if (!formGroups.length) return;
+
+        const step = 0.1; // Stagger delay between each form group
+        formGroups.forEach((group, idx) => {
+            group.style.setProperty('--delay', `${(idx * step).toFixed(2)}s`);
+        });
+
+        const submitBtn = document.querySelector('.btn-submit');
+        if (submitBtn) {
+            submitBtn.style.setProperty('--delay', `${(formGroups.length * step).toFixed(2)}s`);
         }
     }
 
@@ -588,15 +805,27 @@ class PortfolioApp {
 
     /**
      * Service Worker Registration
+     * If registration fails, attempt to unregister any existing service workers to avoid stale/broken workers.
      */
     registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
-                .then(reg => {
+                .then(async reg => {
                     console.log('Service Worker registered:', reg.scope);
                 })
-                .catch(err => {
+                .catch(async err => {
                     console.warn('Service Worker registration failed:', err);
+
+                    // Try to unregister any existing service workers to clean up broken ones
+                    try {
+                        const regs = await navigator.serviceWorker.getRegistrations();
+                        for (const r of regs) {
+                            const result = await r.unregister();
+                            console.log('Service Worker unregistered:', r.scope, result);
+                        }
+                    } catch (unregErr) {
+                        console.warn('Failed to unregister service workers:', unregErr);
+                    }
                 });
         }
     }

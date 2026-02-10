@@ -37,13 +37,82 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Structured Data: JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Saaeb Saad",
+        "jobTitle": "Frontend Developer, Game Developer, Software Developer",
+        "url": "https://saaeb.netlify.app/",
+        "image": "https://saaeb.netlify.app/Images/cropped_circle_image.png",
+        "sameAs": [
+            "https://github.com/saaeb1oq7",
+            "https://discordapp.com/users/1005177056050561066",
+            "https://t.me/Saaeb"
+        ],
+        "description": "Front-end Developer, Game Developer, and Software Developer with experience in web applications, games, and software solutions."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Saaeb Saad Portfolio",
+        "url": "https://saaeb.netlify.app/",
+        "description": "Portfolio showcasing Front-end, Game, and Software development projects.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://saaeb.netlify.app/#projects"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://saaeb.netlify.app/#home"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About",
+                "item": "https://saaeb.netlify.app/#about"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Projects",
+                "item": "https://saaeb.netlify.app/#projects"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Skills",
+                "item": "https://saaeb.netlify.app/#skills"
+            },
+            {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "Contact",
+                "item": "https://saaeb.netlify.app/#contact"
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
     <div class="container">
         <!-- Decorative background video (lazy-loaded) -->
-        <video class="back-vid" loop muted playsinline preload="none" aria-hidden="true" data-autoplay="true">
+        <video class="back-vid" loop muted playsinline preload="none" aria-hidden="true" data-autoplay="true" poster="Images/cropped_circle_image.png">
             <source data-src="Videos/galaxy.mp4" type="video/mp4">
         </video>
 
@@ -67,6 +136,9 @@
                 </nav>
 
                 <div class="header-icons">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <i class='bx bx-moon' aria-hidden="true"></i>
+                    </button>
                     <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                         <i class='bx bxl-github'></i>
                     </a>
@@ -103,7 +175,7 @@
                 <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <i class='bx bxl-github'></i>
                 </a>
-                <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+                <a href="https://discordapp.com/users/1005177056050561066" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                     <i class='bx bxl-discord-alt'></i>
                 </a>
                 <a href="https://t.me/Saaeb" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
@@ -115,7 +187,7 @@
         <main id="main-content" tabindex="-1">
             <!-- Small decorative video box (lazy-loaded) -->
             <div class="blackhole-box" aria-hidden="true">
-                <video loop muted playsinline preload="none" data-autoplay="true">
+                <video loop muted playsinline preload="none" data-autoplay="true" poster="Images/cropped_circle_image.png">
                     <source data-src="Videos/blackhole.mp4" type="video/mp4">
                 </video>
             </div>
@@ -140,10 +212,14 @@
                             <i class='bx bx-send' aria-hidden="true"></i> 
                             Contact Me
                         </a>
-                    </div>
+                        <a class="btn btn-secondary" href="#skills" aria-label="View skills section" style="margin-left: .5rem;">
+                            <i class='bx bx-briefcase' aria-hidden="true"></i>
+                            View Skills
+                        </a>
+                    </div> 
 
                     <div class="hero-visual" data-stagger-group="hero">
-                        <video class="hero-video" loop muted playsinline preload="none" aria-hidden="true" data-autoplay="true" fetchpriority="high">
+                        <video class="hero-video" loop muted playsinline preload="none" aria-hidden="true" data-autoplay="true" fetchpriority="high" poster="Images/cropped_circle_image.png">
                             <source data-src="Videos/hero-video.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -158,7 +234,9 @@
                 <!-- Redesigned About Section -->
                 <section class="about-hero">
                     <div class="about-hero-inner">
-                        <img src="Images/cropped_circle_image.png" alt="Saaeb's profile photo" class="about-hero-avatar" loading="lazy">
+                        <picture class="about-hero-avatar-picture">
+                            <img src="Images/cropped_circle_image.png" alt="Saaeb's profile photo" class="about-hero-avatar lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
+                        </picture>
                         <div class="about-hero-content">
                             <h2 class="about-hero-title">Hi, I'm Saaeb <span aria-label="waving hand" role="img">👋</span></h2>
                             <p class="about-hero-desc">Front-end & Game Developer passionate about building smooth, engaging digital experiences. Based in Kirkuk, Iraq. Open to remote work and global opportunities.</p>
@@ -168,9 +246,11 @@
                 <br>
                 <section class="about-hero">
                     <div class="about-hero-inner">
-                        <img src="Images/grid2.png" alt="Saaeb's profile photo" class="about-hero-avatar" loading="lazy">
+                        <picture class="about-hero-avatar-picture">
+                            <img src="Images/grid2.png" alt="Saaeb's profile photo" class="about-hero-avatar lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
+                        </picture>
                         <div class="about-hero-content">
-                            <h2 class="about-hero-title">Tech-Stack<span aria-label="waving hand" role="img"> 💻</span></h2>
+                            <h2 class="about-hero-title">Tech-<span class="text-gradient">Stack</span><span aria-label="waving hand" role="img"> 💻</span></h2>
                             <p class="about-hero-desc">HTML, CSS, JavaScript, Java, Python, Godot, GDScript, Making smooth and engaging user experiences for both web and game applications.</p>
                         </div>
                     </div>
@@ -178,7 +258,7 @@
                 <br>
                 <section class="about-hero">
                     <div class="about-hero-inner">
-                        <video src="Videos/glob.mp4" alt="Saaeb's profile photo" class="about-hero-avatar" loading="lazy" autoplay muted loop playsinline></video>
+                        <video src="Videos/glob.mp4" alt="Saaeb's profile photo" class="about-hero-avatar" loading="lazy" autoplay muted loop playsinline poster="Images/cropped_circle_image.png"></video>
                         <div class="about-hero-content">
                             <h2 class="about-hero-title">Timezones & location <span aria-label="waving hand" role="img">🌍</span></h2>
                             <p class="about-hero-desc">I'm based in Kirkuk, Iraq (UTC+3). I'm open to remote work and global opportunities.</p>
@@ -188,7 +268,9 @@
                 <br>
                 <section class="about-hero">
                     <div class="about-hero-inner">
-                        <img src="Images/grid4.png" alt="Saaeb's profile photo" class="about-hero-avatar" loading="lazy">
+                        <picture class="about-hero-avatar-picture">
+                            <img src="Images/grid4.png" alt="Saaeb's profile photo" class="about-hero-avatar lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
+                        </picture>
                         <div class="about-hero-content">
                             <h2 class="about-hero-title">My passion for coding <span aria-label="waving hand" role="img">🔥</span></h2>
                             <p class="about-hero-desc">I'm a passionate Front-end & Game Developer based in Kirkuk, Iraq. I love creating smooth, engaging digital experiences for both web and game applications.</p>
@@ -212,7 +294,9 @@
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
-                            <img src="Images/project1.png" alt="Interactive Web Application project screenshot" loading="lazy" width="600" height="360">
+                            <picture class="project-picture">
+                                <img src="Images/project1.png" alt="Interactive Web Application project screenshot" class="lazy-img" loading="lazy" decoding="async" width="600" height="360">
+                            </picture>
                         </div>
                     </div>
                 </div>
@@ -226,20 +310,24 @@
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
-                            <img src="Images/project3.png" alt="Interactive Web Application project screenshot" loading="lazy" width="600" height="360">
+                            <picture class="project-picture">
+                                <img src="Images/project3.png" alt="Interactive Web Application project screenshot" class="lazy-img" loading="lazy" decoding="async" width="600" height="360">
+                            </picture>
                         </div>
                     </div>
                 </div>
                 <div class="projects-grid">
                     <div class="project-card">
                         <div class="project-info fadeInRight">
-                            <h3 class="project-title">Ciphers<span class="text-gradient">-Please</span> </h3>
+                            <h3 class="project-title">Ciphers-<span class="text-gradient">Please</span> </h3>
                             <p class="project-description">A Game About Ciphering and unCiphering messages I worked as a UI developer in this game, but I had Exams so I didn't contribute well enough.</p>
                             <button class="btn btn-primary view-project" data-project="project3">View Project</button>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
-                            <img src="Images/CiphersPleaseCover.jpg" alt="Interactive Web Application project screenshot" loading="lazy" width="600" height="360">
+                            <picture class="project-picture">
+                                <img src="Images/CiphersPleaseCover.jpg" alt="Interactive Web Application project screenshot" class="lazy-img" loading="lazy" decoding="async" width="600" height="360">
+                            </picture>
                         </div>
                     </div>
                 </div>
@@ -247,96 +335,64 @@
 
             <section id="skills" class="section skills-section">
                 <h2 class="section-title autoDisplay">My Skills 💪</h2>
-                
+
                 <div class="skills-grid">
-                    <!-- Frontend Skills -->
+                    <!-- Frontend Development -->
                     <div class="skill-card autoBlur">
                         <div class="skill-card-header">
-                            <i class="bx bx-brush" aria-hidden="true"></i>
-                            <h3>Frontend Development</h3>
+                            <i class="bx bx-brush text-gradient" aria-hidden="true"></i>
+                            <h3 class="text-gradient">Frontend Development</h3>
                         </div>
                         <div class="skill-bars">
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>JavaScript</span>
-                                    <span class="skill-level">80%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 80%"></div>
-                                </div>
+                                <div class="skill-label">JavaScript</div>
+                                <div class="skill-level">80%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="80%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="JavaScript 80%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>HTML & CSS</span>
-                                    <span class="skill-level">90%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 90%"></div>
-                                </div>
+                                <div class="skill-label">HTML & CSS</div>
+                                <div class="skill-level">90%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="90%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="HTML and CSS 90%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Responsive Design</span>
-                                    <span class="skill-level">88%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 88%"></div>
-                                </div>
+                                <div class="skill-label">Responsive Design</div>
+                                <div class="skill-level">88%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="88%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Responsive Design 88%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>UI/UX Design</span>
-                                    <span class="skill-level">90%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 90%"></div>
-                                </div>
+                                <div class="skill-label">UI / UX</div>
+                                <div class="skill-level">90%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="90%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="UI UX 90%"></div></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Game Development Skills -->
+                    <!-- Game Development -->
                     <div class="skill-card autoBlur">
                         <div class="skill-card-header">
-                            <i class="bx bx-joystick" aria-hidden="true"></i>
-                            <h3>Game Development</h3>
+                            <i class="bx bx-joystick text-gradient" aria-hidden="true"></i>
+                            <h3 class="text-gradient">Game Development</h3>
                         </div>
                         <div class="skill-bars">
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Godot Engine</span>
-                                    <span class="skill-level">80%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 80%"></div>
-                                </div>
+                                <div class="skill-label">Godot Engine</div>
+                                <div class="skill-level">80%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="80%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Godot Engine 80%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>3D Modeling</span>
-                                    <span class="skill-level">0%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 0%"></div>
-                                </div>
+                                <div class="skill-label">3D Modeling</div>
+                                <div class="skill-level">0%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="0%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="3D Modeling 0%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Game Design</span>
-                                    <span class="skill-level">60%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 60%"></div>
-                                </div>
+                                <div class="skill-label">Game Design</div>
+                                <div class="skill-level">60%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="60%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Game Design 60%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Physics & Logic</span>
-                                    <span class="skill-level">75%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 75%"></div>
-                                </div>
+                                <div class="skill-label">Physics & Logic</div>
+                                <div class="skill-level">75%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="75%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Physics and Logic 75%"></div></div>
                             </div>
                         </div>
                     </div>
@@ -344,165 +400,100 @@
                     <!-- Programming & Tools -->
                     <div class="skill-card autoBlur">
                         <div class="skill-card-header">
-                            <i class="bx bx-code-block" aria-hidden="true"></i>
-                            <h3>Programming & Tools</h3>
+                            <i class="bx bx-code-block text-gradient" aria-hidden="true"></i>
+                            <h3 class="text-gradient">Programming & Tools</h3>
                         </div>
                         <div class="skill-bars">
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Python</span>
-                                    <span class="skill-level">80%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 80%"></div>
-                                </div>
+                                <div class="skill-label">Python</div>
+                                <div class="skill-level">80%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="80%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Python 80%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Java</span>
-                                    <span class="skill-level">85%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 85%"></div>
-                                </div>
+                                <div class="skill-label">Java</div>
+                                <div class="skill-level">85%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="85%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Java 85%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Git & Version Control</span>
-                                    <span class="skill-level">65%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 65%"></div>
-                                </div>
+                                <div class="skill-label">Git & Version Control</div>
+                                <div class="skill-level">65%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="65%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Git 65%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>VS Code & IDEs</span>
-                                    <span class="skill-level">80%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 80%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br class="desktop-only">
-                    <!-- Soft Skills -->
-                    <div class="skill-card autoBlur">
-                        <div class="skill-card-header">
-                            <i class='bx bxs-hand'></i>
-                            <h3>Soft Skills & Expertise</h3>
-                        </div>
-                        <div class="skill-bars">
-                            <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Problem Solving</span>
-                                    <span class="skill-level">90%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Communication</span>
-                                    <span class="skill-level">85%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Team Collaboration</span>
-                                    <span class="skill-level">80%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 80%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item">
-                                <div class="skill-label">
-                                    <span>Adaptability</span>
-                                    <span class="skill-level">95%</span>
-                                </div>
-                                <div class="skill-bar">
-                                    <div class="skill-progress" style="width: 95%"></div>
-                                </div>
+                                <div class="skill-label">VS Code & IDEs</div>
+                                <div class="skill-level">80%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="80%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="VS Code 80%"></div></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Hobbies interests -->
+                    <!-- Soft Skills -->
                     <div class="skill-card autoBlur">
                         <div class="skill-card-header">
-                            <i class="bx bx-brush" aria-hidden="true"></i>
-                            <h3>Hobbies & Interests</h3>
+                            <i class='bx bxs-hand text-gradient'></i>
+                            <h3 class="text-gradient">Soft Skills & Expertise</h3>
                         </div>
-                            <div class="skill-bars">
-                                <div class="skill-item">
-                                    <div class="skill-label">
-                                        <span>Chess</span>
-                                        <span class="skill-level">75%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 75%"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-label">
-                                        <span>Poetry</span>
-                                        <span class="skill-level">60%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 60%"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-label">
-                                        <span>Sports</span>
-                                        <span class="skill-level">30%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 30%"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <div class="skill-label">
-                                        <span>Learning</span>
-                                        <span class="skill-level">75%</span>
-                                    </div>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" style="width: 75%"></div>
-                                    </div>
-                                </div>
+                        <div class="skill-bars">
+                            <div class="skill-item">
+                                <div class="skill-label">Problem Solving</div>
+                                <div class="skill-level">90%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="90%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Problem Solving 90%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-label">Communication</div>
+                                <div class="skill-level">65%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="65%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Communication 65%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-label">Team Collaboration</div>
+                                <div class="skill-level">70%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="70%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Team Collaboration 70%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-label">Adaptability</div>
+                                <div class="skill-level">85%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="85%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Adaptability 85%"></div></div>
                             </div>
                         </div>
-                </div>
-                <!-- Tech Stack Showcase -->
+                    </div>
+                </div> 
                 <div class="tech-showcase">
-                    <h3 class="tech-showcase-title">Tech Stack & Technologies</h3>
+                    <h3 class="tech-showcase-title text-gradient">Tech Stack & Technologies</h3>
                     <div class="tech-carousel">
                         <div class="tech-item" tabindex="0" data-skill="Unity" aria-label="Unity development skill" role="button">
-                            <img src="Images/10.png" alt="Unity icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/10.png" alt="Unity icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                         <div class="tech-item" tabindex="0" data-skill="JavaScript" aria-label="JavaScript programming skill" role="button">
-                            <img src="Images/6.png" alt="JavaScript icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/6.png" alt="JavaScript icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                         <div class="tech-item" tabindex="0" data-skill="HTML" aria-label="HTML development skill" role="button">
-                            <img src="Images/12.png" alt="HTML icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/12.png" alt="HTML icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                         <div class="tech-item" tabindex="0" data-skill="Godot" aria-label="Godot game development skill" role="button">
-                            <img src="Images/Godot_Slider.png" alt="Godot icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/Godot_Slider.png" alt="Godot icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                         <div class="tech-item" tabindex="0" data-skill="Tools" aria-label="Development tools skill" role="button">
-                            <img src="Images/Java.png" alt="Tool icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/Java.png" alt="Tool icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                         <div class="tech-item" tabindex="0" data-skill="Frameworks" aria-label="Web frameworks skill" role="button">
-                            <img src="Images/python.png" alt="Framework icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/python.png" alt="Python icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                         <div class="tech-item" tabindex="0" data-skill="General" aria-label="General development skill" role="button">
-                            <img src="Images/7.png" alt="Other icon" loading="lazy">
+                            <picture class="tech-picture">
+                                <img src="Images/7.png" alt="Other icon" loading="lazy" decoding="async" width="80" height="80">
+                            </picture>
                         </div>
                     </div>
 
@@ -511,7 +502,7 @@
                         View My Projects
                     </a>
                 </div>
-            </section>
+            </section> 
             <section id="contact" class="section contact-section">
                 <h2 class="section-title autoDisplay">Let's Talk 😊</h2>
 
