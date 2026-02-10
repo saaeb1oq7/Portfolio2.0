@@ -556,9 +556,13 @@ class PortfolioApp {
                     videoEl.dataset._loaded = '1';
                     videoEl.removeEventListener('canplaythrough', onCanPlay);
                     
-                    // Speed up hero video for better pacing
+                    // Speed up hero video for better pacing (user requested 3.5x)
                     if (videoEl.classList.contains('hero-video')) {
-                        videoEl.playbackRate = 2;
+                        try {
+                            videoEl.playbackRate = 3.5;
+                        } catch (err) {
+                            // ignore if playbackRate cannot be set on this platform
+                        }
                     }
                     
                     // Respect prefers-reduced-data for autoplay
