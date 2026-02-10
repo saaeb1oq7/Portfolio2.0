@@ -1136,18 +1136,22 @@ video {
 .main-nav a::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: -6px;
     left: 50%;
-    width: 0;
-    height: 2px;
+    width: 60%;
+    height: 3px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    transform: translateX(-50%);
-    transition: width 0.35s var(--ease-smooth);
+    border-radius: 2px;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    opacity: 0;
+    transition: transform 0.32s var(--ease-smooth), opacity 0.32s var(--ease-smooth);
 }
 
 .main-nav a:hover::after,
 .main-nav a:focus::after {
-    width: 100%;
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
 }
 
 .main-nav a:hover,
