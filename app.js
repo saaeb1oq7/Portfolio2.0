@@ -38,6 +38,8 @@ class PortfolioApp {
         this.initScrollAnimations();
         this.initParallaxScroll();
         this.initSkillSlider();
+        try { this.initTechItemTilt(); } catch (err) { console.warn('initTechItemTilt failed', err); }
+        try { this.initUniversal3DTilt(); } catch (err) { console.warn('initUniversal3DTilt failed', err); }
         this.initSkillReveal();
         this.initFormAnimations();
         this.initEmailJS();
@@ -822,6 +824,175 @@ class PortfolioApp {
             
             observer.observe(slider);
         }
+    }
+
+    initTechItemTilt() {
+        if (this.state.isReducedMotion) return;
+
+        const isTouch = window.matchMedia('(pointer: coarse)').matches;
+        const items = Array.from(document.querySelectorAll('.tech-item'));
+        if (!items.length) return;
+
+        if (isTouch) {
+            // Simple tap feedback for touch devices
+            items.forEach(el => {
+                el.addEventListener('touchstart', () => {
+                    el.style.transition = 'transform 0.18s ease';
+                    el.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        el.style.transform = '';
+                        el.style.transition = '';
+                    }, 180);
+                }, { passive: true });
+            });
+            return;
+        }
+
+        items.forEach(el => {
+            let rafId = null;
+            let rect = null;
+
+            const resetProps = () => {
+                el.style.setProperty('--rotateX', '0deg');
+                el.style.setProperty('--rotateY', '0deg');
+                el.style.setProperty('--shine-x', '50%');
+                el.style.setProperty('--shine-y', '50%');
+            };
+
+            const onEnter = () => {
+                rect = el.getBoundingClientRect();
+            };
+
+            const onMove = (evt) => {
+                const e = evt.touches ? evt.touches[0] : evt;
+                if (!rect) rect = el.getBoundingClientRect();
+
+                const relX = (e.clientX - rect.left);
+                const relY = (e.clientY - rect.top);
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = Math.max(Math.min(((relY - centerY) / rect.height) * -20, 20), -20);
+                const rotateY = Math.max(Math.min(((relX - centerX) / rect.width) * 20, 20), -20);
+
+                const shineX = (relX / rect.width) * 100;
+                const shineY = (relY / rect.height) * 100;
+
+                if (rafId) cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(() => {
+                    el.style.setProperty('--rotateX', `${rotateX}deg`);
+                    el.style.setProperty('--rotateY', `${rotateY}deg`);
+                    el.style.setProperty('--shine-x', `${shineX}%`);
+                    el.style.setProperty('--shine-y', `${shineY}%`);
+                });
+            };
+
+            const onLeave = () => {
+                if (rafId) cancelAnimationFrame(rafId);
+                // smooth settle
+                el.style.transition = 'transform 0.4s var(--ease-smooth)';
+                resetProps();
+                setTimeout(() => { el.style.transition = ''; }, 400);
+            };
+
+            el.addEventListener('mouseenter', onEnter);
+            el.addEventListener('mousemove', onMove);
+            el.addEventListener('mouseleave', onLeave);
+
+            // keyboard accessibility: reset on blur
+            el.addEventListener('blur', resetProps);
+        });
+    }
+
+    initUniversal3DTilt() {
+        if (this.state.isReducedMotion) return;
+
+        const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+        // Configuration: selector -> intensity (degrees)
+        const config = {
+            '.tech-item': 20,
+            '.btn': 15,
+            '.skill-card': 10,
+            '.project-card': 10,
+            '.hero-visual': 8,
+            '.hero-info': 6,
+            '.about-hero': 8,
+            '.about-hero-avatar': 10,
+            '.contact-links a': 8,
+            '.contact-social a': 8,
+            '.form-group input': 6,
+            '.form-group textarea': 6
+        };
+
+        const elems = [];
+        Object.keys(config).forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => elems.push({ el, intensity: config[sel] }));
+        });
+
+        if (!elems.length) return;
+
+        // Touch devices: simple tap feedback only
+        if (isTouch) {
+            elems.forEach(({ el }) => {
+                el.addEventListener('touchstart', () => {
+                    el.style.transition = 'transform 0.18s ease';
+                    el.style.transform = 'scale(1.03)';
+                    setTimeout(() => { el.style.transform = ''; el.style.transition = ''; }, 180);
+                }, { passive: true });
+            });
+            return;
+        }
+
+        elems.forEach(({ el, intensity }) => {
+            let raf = null;
+            let rect = null;
+
+            const reset = () => {
+                el.style.setProperty('--rotateX', '0deg');
+                el.style.setProperty('--rotateY', '0deg');
+                el.style.setProperty('--shine-x', '50%');
+                el.style.setProperty('--shine-y', '50%');
+            };
+
+            const onEnter = () => { rect = el.getBoundingClientRect(); };
+
+            const onMove = (evt) => {
+                const e = evt.touches ? evt.touches[0] : evt;
+                if (!rect) rect = el.getBoundingClientRect();
+
+                const relX = e.clientX - rect.left;
+                const relY = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = Math.max(Math.min(((relY - centerY) / rect.height) * -intensity, intensity), -intensity);
+                const rotateY = Math.max(Math.min(((relX - centerX) / rect.width) * intensity, intensity), -intensity);
+
+                const shineX = (relX / rect.width) * 100;
+                const shineY = (relY / rect.height) * 100;
+
+                if (raf) cancelAnimationFrame(raf);
+                raf = requestAnimationFrame(() => {
+                    el.style.setProperty('--rotateX', `${rotateX}deg`);
+                    el.style.setProperty('--rotateY', `${rotateY}deg`);
+                    el.style.setProperty('--shine-x', `${shineX}%`);
+                    el.style.setProperty('--shine-y', `${shineY}%`);
+                });
+            };
+
+            const onLeave = () => {
+                if (raf) cancelAnimationFrame(raf);
+                el.style.transition = 'transform 0.35s var(--ease-smooth)';
+                reset();
+                setTimeout(() => { el.style.transition = ''; }, 350);
+            };
+
+            el.addEventListener('mouseenter', onEnter);
+            el.addEventListener('mousemove', onMove);
+            el.addEventListener('mouseleave', onLeave);
+            el.addEventListener('blur', reset);
+        });
     }
 
     /**
