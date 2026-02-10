@@ -34,6 +34,7 @@ class PortfolioApp {
         this.setupThemeToggle();
         this.setupEventListeners();
         this.lazyLoadMedia();
+        this.initPageLoadSequence();
         this.initScrollAnimations();
         this.initParallaxScroll();
         this.initSkillSlider();
@@ -45,6 +46,53 @@ class PortfolioApp {
         window.addEventListener('load', () => {
             this.registerServiceWorker();
         });
+    }
+
+    /**
+     * Page Load Sequence: Staggered animations on initial page load
+     * Creates a polished first impression with orchestrated reveals
+     */
+    initPageLoadSequence() {
+        if (this.state.isReducedMotion) return;
+
+        try {
+            // Header fade-in (0.3s delay)
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.setProperty('--delay', '0.3s');
+                header.classList.add('fadeIn');
+            }
+
+            // Hero content slide-in (0.5s delay)
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                heroContent.style.setProperty('--delay', '0.5s');
+                heroContent.classList.add('slideInDown');
+            }
+
+            // Background video reveal (0.7s delay) if present
+            const videoBg = document.querySelector('.hero-bg-video');
+            if (videoBg) {
+                videoBg.style.setProperty('--delay', '0.7s');
+                videoBg.classList.add('fadeIn');
+            }
+
+            // Hero badge with scale bounce (0.65s delay)
+            const heroBadge = document.querySelector('.hero-badge');
+            if (heroBadge) {
+                heroBadge.style.setProperty('--delay', '0.65s');
+                heroBadge.classList.add('scaleBounce');
+            }
+
+            // Scroll indicator bounce (1.0s delay)
+            const scrollIndicator = document.querySelector('.scroll-down');
+            if (scrollIndicator) {
+                scrollIndicator.style.setProperty('--delay', '1.0s');
+                scrollIndicator.classList.add('bounce');
+            }
+        } catch (err) {
+            console.warn('Page load sequence failed:', err);
+        }
     }
 
     /**
@@ -106,6 +154,7 @@ class PortfolioApp {
 
     /**
      * Reveal skill cards with a staggered animation when they enter view
+     * Enhanced with number counter and particle effects
      */
     initSkillReveal() {
         const cards = Array.from(document.querySelectorAll('.skill-card'));
@@ -120,16 +169,44 @@ class PortfolioApp {
                 const pct = bar.dataset.percent || bar.getAttribute('aria-valuenow') || '0';
                 const final = String(pct).endsWith('%') ? pct : `${pct}%`;
                 const num = parseInt(String(final).replace('%', ''), 10) || 0;
+                
+                // Increased stagger timing: 80ms → 120ms
+                const staggerDelay = i * 120;
+                
                 setTimeout(() => {
+                    // Animate bar width with elastic easing
+                    bar.style.animation = `elasticFill 0.8s var(--ease-elastic) forwards`;
                     bar.style.width = final;
                     bar.setAttribute('aria-valuenow', String(num));
 
-                    // insert/update label inside bar for better readability when there's space
+                    // Number counter animation
                     const parentItem = bar.closest('.skill-item');
                     const skillLevelEl = parentItem?.querySelector('.skill-level');
+                    
+                    // Animate number counter from 0 to target
+                    if (skillLevelEl && num > 0) {
+                        const duration = 800; // Match bar animation duration
+                        const start = performance.now();
+                        const animateCounter = (now) => {
+                            const elapsed = now - start;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const current = Math.floor(progress * num);
+                            skillLevelEl.textContent = `${current}%`;
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(animateCounter);
+                            } else {
+                                skillLevelEl.textContent = final;
+                                
+                                // Particle burst effect when complete
+                                this.createParticleBurst(bar);
+                            }
+                        };
+                        requestAnimationFrame(animateCounter);
+                    }
 
+                    // Insert/update label inside bar for better readability
                     if (num >= 12) {
-                        // create or update label inside bar
                         let label = bar.querySelector('.skill-progress-label');
                         if (!label) {
                             label = document.createElement('span');
@@ -143,7 +220,7 @@ class PortfolioApp {
                         parentItem?.classList.remove('skill-item--label-inside');
                         if (skillLevelEl) skillLevelEl.removeAttribute('aria-hidden');
                     }
-                }, i * 80);
+                }, staggerDelay);
             });
         };
 
@@ -167,6 +244,66 @@ class PortfolioApp {
             cards.forEach(c => revealCard(c));
         }
     }
+
+    /**
+     * Create particle burst effect at bar completion
+     * @param {HTMLElement} bar - The skill progress bar element
+     */
+    createParticleBurst(bar) {
+        if (this.state.isReducedMotion) return;
+        
+        const rect = bar.getBoundingClientRect();
+        const container = bar.closest('.skill-item');
+        
+        if (!container) return;
+
+        // Create 6-8 particles
+        const particleCount = Math.floor(Math.random() * 3) + 6;
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'skill-particle';
+            particle.style.position = 'absolute';
+            particle.style.pointerEvents = 'none';
+            particle.style.left = `${rect.width - 20}px`;
+            particle.style.top = `${rect.height / 2}px`;
+            particle.style.width = '6px';
+            particle.style.height = '6px';
+            particle.style.backgroundColor = 'rgba(114, 161, 222, 0.8)';
+            particle.style.borderRadius = '50%';
+            particle.style.willChange = 'transform, opacity';
+            
+            container.appendChild(particle);
+            
+            // Random burst direction
+            const angle = (i / particleCount) * Math.PI * 2 + (Math.random() - 0.5);
+            const velocity = 4 + Math.random() * 6;
+            const vx = Math.cos(angle) * velocity;
+            const vy = Math.sin(angle) * velocity;
+            
+            let x = 0, y = 0;
+            const duration = 600;
+            const start = performance.now();
+            
+            const animate = (now) => {
+                const elapsed = now - start;
+                const progress = elapsed / duration;
+                
+                if (progress < 1) {
+                    x += vx;
+                    y += vy;
+                    const opacity = 1 - progress;
+                    particle.style.transform = `translate(${x}px, ${y}px)`;
+                    particle.style.opacity = String(opacity);
+                    requestAnimationFrame(animate);
+                } else {
+                    particle.remove();
+                }
+            };
+            
+            requestAnimationFrame(animate);
+        }
+    }
+
 
     /**
      * Set up event listeners
@@ -221,11 +358,49 @@ class PortfolioApp {
 
         // Video interactions
         this.setupVideoInteractions();
+
+        // Header scroll effects
+        this.setupHeaderScrollEffects();
     }
 
     /**
-     * Sidebar management
+     * Header scroll effects: Enhance background blur and color on scroll
      */
+    setupHeaderScrollEffects() {
+        const header = document.querySelector('.site-header');
+        if (!header || this.state.isReducedMotion) return;
+
+        let ticking = false;
+        const updateHeaderOnScroll = () => {
+            const scrollY = window.scrollY;
+            const maxScroll = 150;
+            const scrollProgress = Math.min(scrollY / maxScroll, 1);
+
+            // Increase blur amount based on scroll position
+            const blurAmount = scrollProgress * 12;
+            const opacity = 0.6 + (scrollProgress * 0.25);
+            
+            header.style.backdropFilter = `blur(${blurAmount}px)`;
+            header.style.background = `linear-gradient(180deg, rgba(5, 0, 20, ${opacity}), transparent)`;
+            header.style.boxShadow = scrollProgress > 0.1 
+                ? `0 4px 20px rgba(0, 0, 0, ${scrollProgress * 0.4})` 
+                : 'none';
+            
+            ticking = false;
+        };
+
+        const requestTick = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateHeaderOnScroll);
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', requestTick, { passive: true });
+    }
+
+    /**
+     * Video interactions
     openSidebar() {
         this.elements.sidebar.setAttribute('aria-hidden', 'false');
         this.elements.sidebar.setAttribute('aria-modal', 'true');
@@ -534,7 +709,12 @@ class PortfolioApp {
 
         try {
             const groups = {};
-            const selectors = ['.autoBlur', '.autoDisplay', '.fadeInRight', '.form-group', '.skill-card', '.project-card'];
+            // Expanded selectors including new animation classes
+            const selectors = [
+                '.autoBlur', '.autoDisplay', '.fadeInRight', 
+                '.form-group', '.skill-card', '.project-card',
+                '.slideInLeft', '.slideInRight', '.scaleIn', '.rotateIn', '.blurFadeIn'
+            ];
             
             // Group elements by stagger group
             selectors.forEach(sel => {
@@ -545,8 +725,8 @@ class PortfolioApp {
                 });
             });
 
-            // Assign staggered delays
-            const step = 0.08;
+            // Assign staggered delays with increased timing (120ms = 0.12s)
+            const step = 0.12;
             Object.values(groups).forEach(groupEls => {
                 groupEls.forEach((el, idx) => {
                     const existingDelay = el.style.getPropertyValue('--delay');
@@ -650,11 +830,37 @@ class PortfolioApp {
         const step = 0.1; // Stagger delay between each form group
         formGroups.forEach((group, idx) => {
             group.style.setProperty('--delay', `${(idx * step).toFixed(2)}s`);
+            
+            // Add floating label animation on input/textarea focus
+            const input = group.querySelector('input, textarea, select');
+            if (input) {
+                input.addEventListener('focus', () => {
+                    group.classList.add('input-focused');
+                });
+                
+                input.addEventListener('blur', () => {
+                    if (!input.value.trim()) {
+                        group.classList.remove('input-focused');
+                    }
+                });
+                
+                // Maintain focus state if field has value on load
+                if (input.value.trim()) {
+                    group.classList.add('input-focused');
+                }
+            }
         });
 
         const submitBtn = document.querySelector('.btn-submit');
         if (submitBtn) {
             submitBtn.style.setProperty('--delay', `${(formGroups.length * step).toFixed(2)}s`);
+            
+            // Add spinner animation on submit
+            submitBtn.addEventListener('click', () => {
+                if (!submitBtn.disabled) {
+                    submitBtn.classList.add('btn-loading');
+                }
+            });
         }
     }
 
@@ -689,6 +895,7 @@ class PortfolioApp {
         // Clear previous states
         this.clearFormErrors(fields);
         this.elements.formStatus.textContent = '';
+        this.elements.formStatus.className = '';
 
         // Validate
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -711,17 +918,30 @@ class PortfolioApp {
 
         if (hasError) {
             this.elements.formStatus.textContent = 'Please correct the highlighted fields.';
+            this.elements.formStatus.className = 'form-status-error';
             return;
         }
 
         // Submit form
         try {
+            const submitBtn = form.querySelector('.btn-submit');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('btn-loading');
+            }
+            
             this.elements.formStatus.textContent = 'Sending...';
+            this.elements.formStatus.className = 'form-status-loading';
             
             // Check if EmailJS is configured
             if (!this.emailServiceID || this.emailServiceID === 'YOUR_SERVICE_ID_HERE') {
                 this.elements.formStatus.textContent = 'Email service not configured. Please contact via email.';
+                this.elements.formStatus.className = 'form-status-error';
                 console.warn('EmailJS not configured. Add your credentials to initEmailJS()');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('btn-loading');
+                }
                 return;
             }
 
@@ -732,11 +952,49 @@ class PortfolioApp {
                 form
             );
             
-            this.elements.formStatus.textContent = 'Message sent successfully! I\'ll get back to you soon.';
+            // Success state with animation
+            this.elements.formStatus.textContent = '✓ Message sent successfully! I\'ll get back to you soon.';
+            this.elements.formStatus.className = 'form-status-success';
+            this.elements.formStatus.style.animation = 'slideInDown 0.5s var(--ease-smooth)';
+            
             form.reset();
+            
+            // Clear form focused states
+            fields.forEach(field => {
+                if (field.el) {
+                    const group = field.el.closest('.form-group');
+                    if (group) {
+                        group.classList.remove('input-focused');
+                    }
+                }
+            });
+            
+            // Reset button state
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('btn-loading');
+            }
+            
+            // Clear success message after 5 seconds
+            setTimeout(() => {
+                this.elements.formStatus.textContent = '';
+                this.elements.formStatus.className = '';
+                this.elements.formStatus.style.animation = '';
+            }, 5000);
+            
         } catch (err) {
             console.error('EmailJS Error:', err);
-            this.elements.formStatus.textContent = 'Failed to send message. Please try emailing directly at saaebkirkuk@gmail.com';
+            
+            // Error state with animation
+            this.elements.formStatus.textContent = '✗ Failed to send message. Please try emailing directly.';
+            this.elements.formStatus.className = 'form-status-error';
+            this.elements.formStatus.style.animation = 'shake 0.4s var(--ease-smooth)';
+            
+            const submitBtn = form.querySelector('.btn-submit');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('btn-loading');
+            }
         }
     }
 
@@ -754,7 +1012,19 @@ class PortfolioApp {
     setFieldError(field, errorElement, message) {
         field.classList.add('is-invalid');
         field.setAttribute('aria-invalid', 'true');
-        if (errorElement) errorElement.textContent = message;
+        
+        // Add shake animation for validation error
+        field.style.animation = 'shake 0.4s var(--ease-smooth)';
+        
+        // Reset animation after it completes
+        setTimeout(() => {
+            field.style.animation = '';
+        }, 400);
+        
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.animation = 'fadeIn 0.3s var(--ease-smooth)';
+        }
     }
 
     /**
