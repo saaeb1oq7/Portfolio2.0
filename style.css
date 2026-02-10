@@ -1136,13 +1136,15 @@ video {
 .main-nav a::after {
     content: '';
     position: absolute;
-    bottom: -6px;
+    /* sit just under the text */
+    bottom: -2px;
     left: 50%;
     width: 60%;
     height: 3px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     border-radius: 2px;
-    transform: translateX(-50%) scaleX(0);
+    /* shift slightly left: translateX(-50%) + extra offset */
+    transform: translateX(calc(-50% - 6px)) scaleX(0);
     transform-origin: center;
     opacity: 0;
     transition: transform 0.32s var(--ease-smooth), opacity 0.32s var(--ease-smooth);
@@ -1150,7 +1152,7 @@ video {
 
 .main-nav a:hover::after,
 .main-nav a:focus::after {
-    transform: translateX(-50%) scaleX(1);
+    transform: translateX(calc(-50% - 6px)) scaleX(1);
     opacity: 1;
 }
 
