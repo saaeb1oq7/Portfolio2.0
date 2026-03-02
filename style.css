@@ -4439,3 +4439,60 @@ span.text-gradient, .text-gradient {
 .main-nav a:hover::after {
     width: 100%;
 }
+/* ===== Responsive Reset & Restored Background ===== */
+/* Appended: authoritative, mobile-first responsive rules and lightweight starry background.
+   These rules are deliberately last so they override conflicting earlier snippets. */
+
+/* Gentle starry background layered over the theme color */
+body {
+    background:
+      radial-gradient(rgba(255,255,255,0.035) 0.6px, transparent 0.6px) 0 0/20px 20px,
+      radial-gradient(rgba(255,255,255,0.02) 0.6px, transparent 0.6px) 10px 10px/120px 120px,
+      var(--bg-primary, #050014);
+    background-attachment: fixed;
+    background-repeat: repeat;
+}
+
+/* Final responsive, mobile-first skills grid rules (authoritative) */
+.skills-section { padding: var(--space-lg) 0; }
+.skills-grid {
+    display: grid !important;
+    gap: clamp(16px, 2vw, 36px) !important;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 var(--space-sm) !important;
+    justify-content: center !important;
+    align-items: start !important;
+}
+
+/* Ensure no leftover card offsets and keep content top-aligned */
+.skill-card {
+    left: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+}
+
+/* Tweak columns on larger viewports */
+@media (min-width: 992px) {
+    .skills-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 360px)) !important; max-width: 1400px !important; }
+}
+@media (min-width: 1400px) {
+    .skills-grid { grid-template-columns: repeat(3, minmax(360px, 420px)) !important; gap: 40px !important; }
+}
+
+/* Small devices cleanup to ensure full-width readable cards */
+@media (max-width: 520px) {
+    .skills-grid { grid-template-columns: 1fr !important; gap: 14px !important; padding: 0 var(--space-sm) !important; }
+    .skill-card { padding: var(--space-md) !important; border-radius: 12px !important; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .skills-grid, .skill-card { transition: none !important; }
+}
+
+/* End appended block */
