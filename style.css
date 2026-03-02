@@ -788,9 +788,7 @@
     background: linear-gradient(135deg, #f0f4ff 0%, #f8f5ff 50%, #fff0f5 100%) !important;
 }
 
-[data-theme="light"] .blackhole-box {
-    display: none;
-}
+
 
 [data-theme="light"] span.text-gradient,
 [data-theme="light"] .text-gradient {
@@ -960,28 +958,7 @@ video {
     transition: opacity 400ms ease-in;
 }
 
-.blackhole-box {
-    position: fixed;
-    right: 1.25rem;
-    bottom: 1.25rem;
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-    overflow: hidden;
-    z-index: 1;
-    pointer-events: none;
-    box-shadow: var(--shadow-lg);
-    background: transparent;
-    animation: floatY 4s ease-in-out infinite;
-    will-change: transform;
-}
 
-.blackhole-box video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: transparent;
-}
 
 /* Floating badges or decorative elements */
 .floating-badge,
@@ -1730,11 +1707,6 @@ main {
     .contact-container {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
-    }
-
-    .blackhole-box {
-        width: 100px;
-        height: 100px;
     }
 }
 
@@ -2925,7 +2897,6 @@ span.text-gradient, .text-gradient {
     }
 
     /* Floating elements - disable animations */
-    .blackhole-box,
     .floating-badge,
     [class*="floating"],
     [class*="glow-badge"] {
@@ -3059,13 +3030,6 @@ span.text-gradient, .text-gradient {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
     }
-    
-    .blackhole-box {
-        width: 120px;
-        height: 120px;
-        right: 0.75rem;
-        bottom: 0.75rem;
-    }
 
     /* Additional tablet-specific improvements */
     .hero-description {
@@ -3141,9 +3105,7 @@ span.text-gradient, .text-gradient {
         padding: var(--space-md) var(--space-xs);
     }
 
-    .blackhole-box {
-        display: none;
-    }
+
 
     .header-inner {
         padding: 0.5rem 0.75rem;
@@ -3201,10 +3163,7 @@ span.text-gradient, .text-gradient {
         transition: width 0.8s ease;
     }
 
-    /* Hide decorative floating element on small screens */
-    .blackhole-box {
-        display: none !important;
-    }
+
 
     /* Tweak tech carousel sizing */
     .tech-item {
@@ -3237,10 +3196,7 @@ span.text-gradient, .text-gradient {
         padding: var(--space-lg) var(--space-md);
     }
 
-    .blackhole-box {
-        width: 60px;
-        height: 60px;
-    }
+
 }
 
 /* Hide site title on very narrow tablets */
@@ -3443,10 +3399,7 @@ span.text-gradient, .text-gradient {
         font-size: 0.875rem;
     }
     
-    .blackhole-box {
-        width: 80px;
-        height: 80px;
-    }
+
     
     .header-inner {
         padding: 0.5rem 0.75rem;
@@ -3498,12 +3451,7 @@ span.text-gradient, .text-gradient {
         grid-template-columns: repeat(2, 1fr);
     }
     
-    .blackhole-box {
-        width: 120px;
-        height: 120px;
-        right: 1rem;
-        bottom: 1rem;
-    }
+
 }
 
 /* Desktop (992px to 1399px) — prefer 2 wider columns for better readable cards */
@@ -3530,13 +3478,7 @@ span.text-gradient, .text-gradient {
         padding: 2rem;
     }
     
-    .blackhole-box {
-        width: 150px;
-        height: 150px;
-        right: 2rem;
-        bottom: 2rem;
-        bottom: 1.25rem;
-    }
+
 } 
 
 /* Portrait Tablets Fix */
@@ -3583,10 +3525,6 @@ span.text-gradient, .text-gradient {
     }
     .card {
         align-items: center;
-    }
-    .blackhole-box {
-        width: 100px;
-        height: 100px;
     }
 }
 

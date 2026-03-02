@@ -21,7 +21,7 @@ const STATIC_ASSETS = [
 // Video files to cache selectively
 const VIDEO_ASSETS = [
     '/Videos/galaxy.mp4',
-    '/Videos/blackhole.mp4',
+
     '/Videos/hero-video.mp4'
 ];
 
