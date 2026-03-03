@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Blog — Saaeb Saad</title>
+    <meta name="description" content="Blog posts, case studies, and tutorials by Saaeb Saad.">
+    <meta name="keywords" content="Saaeb Saad, blog, tutorials, case studies, frontend, game dev">
+    <meta name="author" content="Saaeb Saad">
+
+    <link rel="canonical" href="https://saaeb.netlify.app/blog.html">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Blog — Saaeb Saad">
+    <meta property="og:description" content="Blog posts, case studies, and tutorials by Saaeb Saad.">
+    <meta property="og:image" content="https://saaeb.netlify.app/Images/cropped_circle_image.png">
+    <meta property="og:url" content="https://saaeb.netlify.app/blog.html">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog — Saaeb Saad">
+    <meta name="twitter:description" content="Blog posts, case studies, and tutorials by Saaeb Saad.">
+    <meta name="twitter:image" content="https://saaeb.netlify.app/Images/cropped_circle_image.png">
+
+    <meta name="theme-color" content="#72a1de">
+
+    <link rel="icon" href="Images/cropped_circle_image.png" type="image/png">
+    <link rel="apple-touch-icon" href="Images/cropped_circle_image.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="style.css">
+    <!-- Resource hints / non-blocking load for external icon CDN -->
+    <link rel="preload" as="style" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"></noscript>
+    <meta name="robots" content="index, follow">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <div id="reading-progress"></div>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <div class="container">
+        <!-- Decorative background video (lazy-loaded) -->
+        <video class="back-vid" loop muted playsinline preload="none" aria-hidden="true" data-autoplay="true" poster="Images/cropped_circle_image.png">
+            <source data-src="Videos/galaxy.mp4" type="video/mp4">
+        </video>
+
+        <header class="site-header" role="banner">
+            <div class="header-inner">
+                <div class="header-left">
+                    <a href="index.html#home" class="logo-link">
+                        <img src="Images/cropped_circle_image.png" alt="Saaeb Saad — logo" class="logo" loading="eager" width="48" height="48">
+                    </a>
+                </div>
+                <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+                    <i class="bx bx-menu" aria-hidden="true"></i>
+                </button>
+            </div>
+        </header>
+
+        <aside class="sidebar" id="sidebar" role="complementary" aria-hidden="true">
+            <div class="sidebar-top-row">
+                <button class="sidebar-close" aria-label="Close menu">
+                    <i class="bx bx-x" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Sidebar navigation">
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#skills">Skills</a></li>
+                    <li><a href="index.html#education">Education</a></li>
+                    <li><a href="index.html#blog">Blog</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-icons">
+                <a href="https://linkedin.com/in/saaeb" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class='bx bxl-linkedin-square'></i>
+                </a>
+                <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <i class='bx bxl-github'></i>
+                </a>
+                <a href="https://discordapp.com/users/1005177056050561066" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+                    <i class='bx bxl-discord-alt'></i>
+                </a>
+                <a href="https://t.me/Saaeb" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                    <i class='bx bxl-telegram'></i>
+                </a>
+            </div>
+
+            <div class="sidebar-search">
+                <div class="search-box">
+                    <input type="search" id="siteSearch" placeholder="Search…" aria-label="Search the site">
+                    <button id="searchBtn" aria-label="Submit search" type="button"><i class='bx bx-search'></i></button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <main id="main-content" tabindex="-1">
+        <section class="section blog-posts">
+            <h2 class="section-title autoDisplay">Blog & Case Studies</h2>
+            <div class="blog-filter">
+                <button class="blog-filter-btn active" data-category="all">All</button>
+                <button class="blog-filter-btn" data-category="java">Java / Game Dev</button>
+                <button class="blog-filter-btn" data-category="frontend">Frontend</button>
+                <button class="blog-filter-btn" data-category="python">Python</button>
+                <button class="blog-filter-btn" data-category="uiux">UI/UX</button>
+            </div>
+
+            <article class="blog-card blog-post autoBlur" data-category="java">
+                <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                <span class="blog-tag">Game Dev</span>
+                <h3 class="blog-title">Building My First Java Game: Lessons Learned</h3>
+                <span class="blog-date">March 2, 2026</span>
+                <p>In this post, I dive into my experience building my first game with Java using the Godot engine and GDScript...</p>
+                <a href="blog-java-game.html" class="blog-read-more">Read More</a>
+            </article>
+
+            <article class="blog-card blog-post autoBlur" data-category="frontend">
+                <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                <span class="blog-tag">Frontend</span>
+                <h3 class="blog-title">Frontend Best Practices: Responsive Design Patterns</h3>
+                <span class="blog-date">February 28, 2026</span>
+                <p>Exploring responsive web design techniques that ensure a seamless experience across all devices...</p>
+                <a href="blog-responsive.html" class="blog-read-more">Read More</a>
+            </article>
+
+            <article class="blog-card blog-post autoBlur" data-category="python">
+                <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                <span class="blog-tag">Python</span>
+                <h3 class="blog-title">Python for Problem Solving: A Practical Guide</h3>
+                <span class="blog-date">February 20, 2026</span>
+                <p>Learn how I use Python to solve algorithmic challenges. This guide covers data structures...</p>
+                <a href="blog-python.html" class="blog-read-more">Read More</a>
+            </article>
+
+            <article class="blog-card blog-post autoBlur" data-category="uiux">
+                <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                <span class="blog-tag">UI/UX</span>
+                <h3 class="blog-title">UI/UX Design in \"Ciphers Please\" Game</h3>
+                <span class="blog-date">February 15, 2026</span>
+                <p>In-depth case study of my UI development work on the Ciphers Please game...</p>
+                <a href="blog-ciphers-ui.html" class="blog-read-more">Read More</a>
+            </article>
+
+            <p style="margin-top: 2rem; text-align: center;"><a href="index.html" class="btn btn-secondary">Back to Home</a></p>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <p>Copyrights © 2025 <span class="text-gradient">Saaeb Saad</span>. All rights <span class="text-gradient">reserved</span>.</p>
+        <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Use</a></p>
+    </footer>
+    </div>
+
+    <div id="status" class="sr-only" aria-live="polite"></div>
+
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="app.js" defer></script>
+</body>
+</html>

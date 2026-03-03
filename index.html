@@ -29,10 +29,10 @@
     <link rel="manifest" href="manifest.json">
 
     <link rel="stylesheet" href="style.css">
-    <!-- Resource hints for external icon CDN -->
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Resource hints / non-blocking load for external icon CDN -->
+    <link rel="preload" as="style" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"></noscript>
     <meta name="robots" content="index, follow">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -64,7 +64,7 @@
         "description": "Portfolio showcasing Front-end, Game, and Software development projects.",
         "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://saaeb.netlify.app/#projects"
+            "target": "https://saaeb.netlify.app/?search={search_term_string}"
         }
     }
     </script>
@@ -108,9 +108,11 @@
     </script>
 </head>
 <body>
+    <div id="reading-progress"></div>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
     <div class="container">
+        <button id="back-to-top" aria-label="Back to top"><i class="bx bx-chevron-up" aria-hidden="true"></i></button>
         <!-- Decorative background video (lazy-loaded) -->
         <video class="back-vid" loop muted playsinline preload="none" aria-hidden="true" data-autoplay="true" poster="Images/cropped_circle_image.png">
             <source data-src="Videos/galaxy.mp4" type="video/mp4">
@@ -122,34 +124,7 @@
                     <a href="#home" class="logo-link">
                         <img src="Images/cropped_circle_image.png" alt="Saaeb Saad — logo" class="logo" loading="eager" width="48" height="48">
                     </a>
-                    <h1 class="site-title"><span class="name-highlight">Saaeb</span> Saad</h1>
                 </div>
-
-                <nav class="main-nav" role="navigation" aria-label="Main navigation">
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#skills">Skills</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-
-                <div class="header-icons">
-                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-                        <i class='bx bx-moon' aria-hidden="true"></i>
-                    </button>
-                    <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                        <i class='bx bxl-github'></i>
-                    </a>
-                    <a href="https://discordapp.com/users/1005177056050561066" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-                        <i class='bx bxl-discord-alt'></i>
-                    </a>
-                    <a href="https://t.me/Saaeb" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-                        <i class='bx bxl-telegram'></i>
-                    </a>
-                </div>
-
                 <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
                     <i class="bx bx-menu" aria-hidden="true"></i>
                 </button>
@@ -157,21 +132,29 @@
         </header>
 
         <aside class="sidebar" id="sidebar" role="complementary" aria-hidden="true">
-            <button class="sidebar-close" aria-label="Close menu">
-                <i class="bx bx-x" aria-hidden="true"></i>
-            </button>
-            
+            <div class="sidebar-top-row">
+                <button class="sidebar-close" aria-label="Close menu">
+                    <i class="bx bx-x" aria-hidden="true"></i>
+                </button>
+            </div>
+
             <nav class="sidebar-nav" aria-label="Sidebar navigation">
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#skills">Skills</a></li>
+                    <li><a href="index.html#education">Education</a></li>
+                    <li><a href="index.html#blog">Blog</a></li>
+                    <li><a href="index.html#testimonials">Testimonials</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
                 </ul>
             </nav>
 
             <div class="sidebar-icons">
+                <a href="https://linkedin.com/in/saaeb" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <i class='bx bxl-linkedin-square'></i>
+                </a>
                 <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                     <i class='bx bxl-github'></i>
                 </a>
@@ -182,7 +165,16 @@
                     <i class='bx bxl-telegram'></i>
                 </a>
             </div>
+
+            <div class="sidebar-search">
+                <div class="search-box">
+                    <input type="search" id="siteSearch" placeholder="Search…" aria-label="Search the site">
+                    <button id="searchBtn" aria-label="Submit search" type="button"><i class='bx bx-search'></i></button>
+                </div>
+            </div>
         </aside>
+
+        <div class="sidebar-backdrop" aria-hidden="true"></div>
 
         <main id="main-content" tabindex="-1">
             <section id="home" class="hero">
@@ -200,15 +192,22 @@
                         <p class="hero-description">
                             I am a Front-end developer, Game Developer, and Software Developer with experience in web applications, games, and software solutions. My goal is to create efficient and user-friendly applications.
                         </p>
+                        <p class="hero-typed-subtitle"><span id="typed-text" aria-live="polite"></span></p>
 
-                        <a class="btn btn-primary" href="#contact">
-                            <i class='bx bx-send' aria-hidden="true"></i> 
-                            Contact Me
-                        </a>
-                        <a class="btn btn-secondary" href="#skills" aria-label="View skills section" style="margin-left: .5rem;">
-                            <i class='bx bx-briefcase' aria-hidden="true"></i>
-                            View Skills
-                        </a>
+                        <div class="hero-btns">
+                            <a class="btn btn-primary" href="#contact">
+                                <i class='bx bx-send' aria-hidden="true"></i> 
+                                Contact Me
+                            </a>
+                            <a class="btn btn-secondary" href="#skills" aria-label="View skills section">
+                                <i class='bx bx-briefcase' aria-hidden="true"></i>
+                                View Skills
+                            </a>
+                            <a class="btn btn-secondary" href="SAAEB CV.pdf" download>
+                                <i class='bx bx-download' aria-hidden="true"></i>
+                                Download CV
+                            </a>
+                        </div>
                     </div> 
 
                     <div class="hero-visual" data-stagger-group="hero">
@@ -223,7 +222,7 @@
                 </button>
             </section>
 
-            <section id="about" class="section about-section">
+            <section id="about" class="section about-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
                 <!-- Redesigned About Section -->
                 <section class="about-hero">
                     <div class="about-hero-inner">
@@ -236,11 +235,12 @@
                         </div>
                     </div>
                 </section>
+                
                 <br>
                 <section class="about-hero">
                     <div class="about-hero-inner">
                         <picture class="about-hero-avatar-picture">
-                            <img src="Images/grid2.png" alt="Saaeb's profile photo" class="about-hero-avatar lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
+                            <img src="Images/grid2.png" alt="Tech stack visual" class="about-hero-graphic lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
                         </picture>
                         <div class="about-hero-content">
                             <h2 class="about-hero-title">Tech-<span class="text-gradient">Stack</span><span aria-label="waving hand" role="img"> 💻</span></h2>
@@ -251,7 +251,9 @@
                 <br>
                 <section class="about-hero">
                     <div class="about-hero-inner">
-                        <video src="Videos/glob.mp4" alt="Saaeb's profile photo" class="about-hero-avatar" loading="lazy" autoplay muted loop playsinline poster="Images/cropped_circle_image.png"></video>
+                        <video class="about-hero-avatar" muted loop playsinline preload="none" data-autoplay="true" poster="Images/cropped_circle_image.png">
+                            <source data-src="Videos/glob.mp4" type="video/mp4">
+                        </video>
                         <div class="about-hero-content">
                             <h2 class="about-hero-title">Timezones & location <span aria-label="waving hand" role="img">🌍</span></h2>
                             <p class="about-hero-desc">I'm based in Kirkuk, Iraq (UTC+3). I'm open to remote work and global opportunities.</p>
@@ -262,7 +264,7 @@
                 <section class="about-hero">
                     <div class="about-hero-inner">
                         <picture class="about-hero-avatar-picture">
-                            <img src="Images/grid4.png" alt="Saaeb's profile photo" class="about-hero-avatar lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
+                            <img src="Images/grid4.png" alt="World/timezones graphic" class="about-hero-graphic lazy-img" loading="lazy" decoding="async" fetchpriority="low" width="180" height="180">
                         </picture>
                         <div class="about-hero-content">
                             <h2 class="about-hero-title">My passion for coding <span aria-label="waving hand" role="img">🔥</span></h2>
@@ -272,8 +274,86 @@
                 </section>
             </section>
             <br>
+            <section id="education" class="section education-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
+                <h2 class="section-title autoDisplay">Education</h2>
+                <div class="edu-timeline">
+                    <div class="edu-card autoBlur">
+                        <span class="edu-badge"><span class="edu-dot"></span>10th Grade</span>
+                        <h3>Industrial School – Cybersecurity</h3>
+                        <p>First year of an Industrial school (my first year is all about building a strong foundation. The field of cybersecurity is vast, and this diploma is your first big step)</p>
+                    </div>
+                    <div class="edu-card autoBlur">
+                        <span class="edu-badge"><span class="edu-dot"></span>2024</span>
+                        <h3>Codingal Java Developer Certificate</h3>
+                        <p>Completed projects/quizzes; certified by STEM, Google &amp; Amazon</p>
+                    </div>
+                    <div class="edu-card autoBlur">
+                        <span class="edu-badge"><span class="edu-dot"></span>2025</span>
+                        <h3>Codingal Basic DSA Programmer Certificate</h3>
+                        <p>Projects/quizzes, training with Java experts; certified by STEM, Google &amp; Amazon</p>
+                    </div>
+                    <div class="edu-card autoBlur">
+                        <span class="edu-badge"><span class="edu-dot"></span>RTS School</span>
+                        <h3>Programming (Python) Training</h3>
+                        <p>Training with Computer Science teacher</p>
+                    </div>
+                    <div class="edu-card autoBlur">
+                        <span class="edu-badge"><span class="edu-dot"></span>Web Dev Course</span>
+                        <h3>HTML, CSS &amp; JS Projects</h3>
+                        <p>Web Development course project work; mentored by a Computer Engineer</p>
+                    </div>
+                </div>
+            </section>
+            <section id="blog" class="section blog-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
+                <h2 class="section-title autoDisplay">Blog & Case Studies</h2>
+                <div class="blog-preview-grid">
+                    <div class="blog-card">
+                        <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                        <span class="blog-tag">Tutorial</span>
+                        <h3 class="blog-title">Understanding CSS Grid</h3>
+                        <span class="blog-date">March 1, 2025</span>
+                        <a href="blog.html" class="blog-read-more">Read More</a>
+                    </div>
+                    <div class="blog-card autoBlur">
+                        <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                        <span class="blog-tag">Project</span>
+                        <h3 class="blog-title">Building a Portfolio Site</h3>
+                        <span class="blog-date">Feb 20, 2025</span>
+                        <a href="blog.html" class="blog-read-more">Read More</a>
+                    </div>
+                    <div class="blog-card autoBlur">
+                        <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                        <span class="blog-tag">Game Dev</span>
+                        <h3 class="blog-title">Creating Ciphers-Please UI</h3>
+                        <span class="blog-date">Jan 15, 2025</span>
+                        <a href="blog.html" class="blog-read-more" style="margin-top: 1rem;">Read More</a>
+                    </div>
+                </div>
+                <p><a href="blog.html" class="btn btn-primary">View All Posts</a></p>
+            </section>
 
-            <section id="projects" class="section projects-section">
+            <section id="testimonials" class="section testimonials-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
+                <h2 class="section-title autoDisplay">Testimonials</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card autoBlur">
+                        <p class="testimonial-text">"Saaeb is an exceptional problem-solver with deep technical knowledge. His ability to grasp complex concepts quickly is impressive for his age."</p>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-author"><strong>— Java Training Instructor, Codingal</strong></p>
+                    </div>
+                    <div class="testimonial-card autoBlur">
+                        <p class="testimonial-text">"His UI work on Ciphers Please was outstanding. He brought creative solutions and applied solid UX principles to enhance user engagement."</p>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-author"><strong>— Game Development Team Lead</strong></p>
+                    </div>
+                    <div class="testimonial-card autoBlur">
+                        <p class="testimonial-text">"Saaeb demonstrates strong commitment to self-improvement. He's always eager to learn new frameworks and technologies, making him a valuable team member."</p>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-author"><strong>— Computer Science Teacher, RTS School</strong></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="section projects-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
                 <h2 class="section-title autoDisplay">My Projects</h2>
                 <div class="projects-grid">
                     <div class="project-card">
@@ -283,7 +363,7 @@
                                 A Repository of Java Programs including simple and complex programs with comments for learning and reference purposes. -- Codingal
                             </p>
                             <!-- CUSTOMIZE: Change data-project="project1" to link to your project, change button text -->
-                            <button class="btn btn-primary view-project" data-project="project1">View Project</button>
+                            <a class="btn btn-primary" href="project1.html">View Project</a>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
@@ -299,7 +379,7 @@
                             <h3 class="project-title">Interactive <span class="text-gradient">Web</span> Application</h3>
                             <p class="project-description">A Website showcasing industrial school studies in Iraq with books and lieutenant. Making it easier to get useful information about industrial studies before entering.</p>
                             <!-- CUSTOMIZE: Change data-project="project3" to link to your project, change button text -->
-                            <button class="btn btn-primary view-project" data-project="project2">View Project</button>
+                            <a class="btn btn-primary" href="project2.html">View Project</a>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
@@ -314,7 +394,7 @@
                         <div class="project-info fadeInRight">
                             <h3 class="project-title">Ciphers-<span class="text-gradient">Please</span> </h3>
                             <p class="project-description">A Game About Ciphering and unCiphering messages I worked as a UI developer in this game, but I had Exams so I didn't contribute well enough.</p>
-                            <button class="btn btn-primary view-project" data-project="project3">View Project</button>
+                            <a class="btn btn-primary" href="project3.html">View Project</a>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
@@ -326,7 +406,7 @@
                 </div>
             </section>
 
-            <section id="skills" class="section skills-section">
+            <section id="skills" class="section skills-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
                 <h2 class="section-title autoDisplay">My Skills 💪</h2>
 
                 <div class="skills-grid">
@@ -373,19 +453,19 @@
                                 <div class="skill-bar"><div class="skill-progress" data-percent="80%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Godot Engine 80%"></div></div>
                             </div>
                             <div class="skill-item">
-                                <div class="skill-label">3D Modeling</div>
-                                <div class="skill-level">0%</div>
-                                <div class="skill-bar"><div class="skill-progress" data-percent="0%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="3D Modeling 0%"></div></div>
-                            </div>
-                            <div class="skill-item">
                                 <div class="skill-label">Game Design</div>
-                                <div class="skill-level">60%</div>
-                                <div class="skill-bar"><div class="skill-progress" data-percent="60%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Game Design 60%"></div></div>
+                                <div class="skill-level">50%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="50%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Game Design 50%"></div></div>
                             </div>
                             <div class="skill-item">
                                 <div class="skill-label">Physics & Logic</div>
                                 <div class="skill-level">75%</div>
                                 <div class="skill-bar"><div class="skill-progress" data-percent="75%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="Physics and Logic 75%"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-label">AI</div>
+                                <div class="skill-level">35%</div>
+                                <div class="skill-bar"><div class="skill-progress" data-percent="35%" style="width:0%" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" aria-label="AI 35%"></div></div>
                             </div>
                         </div>
                     </div>
@@ -496,7 +576,7 @@
                     </a>
                 </div>
             </section> 
-            <section id="contact" class="section contact-section">
+            <section id="contact" class="section contact-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
                 <h2 class="section-title autoDisplay">Let's Talk 😊</h2>
 
                 <div class="contact-container">
@@ -520,7 +600,7 @@
                             <a href="https://github.com/saaeb1oq7" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                 <i class='bx bxl-github'></i>
                             </a>
-                            <a href="https://discord.com/" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+                            <a href="https://discordapp.com/users/1005177056050561066" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                                 <i class='bx bxl-discord-alt'></i>
                             </a>
                             <a href="https://t.me/Saaeb" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
@@ -565,12 +645,13 @@
 
         <footer class="site-footer">
             <p>Copyrights © 2025 <span class="text-gradient">Saaeb Saad</span>. All rights <span class="text-gradient">reserved</span>.</p>
+            <!-- <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Use</a></p> -->
         </footer>
     </div>
 
     <div id="status" class="sr-only" aria-live="polite"></div>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="app.js" defer></script>
 </body>
 </html>

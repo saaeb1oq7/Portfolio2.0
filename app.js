@@ -11,10 +11,13 @@ class PortfolioApp {
         this.elements = {
             menuToggle: document.querySelector('.menu-toggle'),
             sidebar: document.querySelector('.sidebar'),
+            sidebarBackdrop: document.querySelector('.sidebar-backdrop'),
             sidebarClose: document.querySelector('.sidebar-close'),
             contactForm: document.getElementById('contactForm'),
             formStatus: document.getElementById('formStatus'),
-            scrollDown: document.querySelector('.scroll-down')
+            scrollDown: document.querySelector('.scroll-down'),
+            siteSearch: document.getElementById('siteSearch'),
+            searchBtn: document.getElementById('searchBtn')
         };
 
         // State
@@ -31,7 +34,6 @@ class PortfolioApp {
      * Initialize all functionality
      */
     init() {
-        this.setupThemeToggle();
         this.setupEventListeners();
         this.lazyLoadMedia();
         this.initPageLoadSequence();
@@ -43,6 +45,11 @@ class PortfolioApp {
         this.initSkillReveal();
         this.initFormAnimations();
         this.initEmailJS();
+        // additional features
+        this.initActiveNav();
+        this.initTypedText();
+        this.initBlogFilter();
+        this.initSkillTooltips();
         
         // Defer non-critical initialization
         window.addEventListener('load', () => {
@@ -72,12 +79,6 @@ class PortfolioApp {
                 heroContent.classList.add('slideInDown');
             }
 
-            // Background video reveal (0.7s delay) if present
-            const videoBg = document.querySelector('.hero-bg-video');
-            if (videoBg) {
-                videoBg.style.setProperty('--delay', '0.7s');
-                videoBg.classList.add('fadeIn');
-            }
 
             // Hero badge with scale bounce (0.65s delay)
             const heroBadge = document.querySelector('.hero-badge');
@@ -97,62 +98,7 @@ class PortfolioApp {
         }
     }
 
-    /**
-     * Setup Dark Mode Theme Toggle
-     */
-    setupThemeToggle() {
-        const themeToggle = document.getElementById('themeToggle');
-        if (!themeToggle) return;
 
-        // Get saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-
-        this.setTheme(initialTheme);
-
-        // Theme toggle button click handler
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            this.setTheme(newTheme);
-        });
-
-        // Listen for system preference changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            const savedTheme = localStorage.getItem('theme');
-            if (!savedTheme) {
-                this.setTheme(e.matches ? 'dark' : 'light');
-            }
-        });
-    }
-
-    /**
-     * Set theme and persist to localStorage
-     * @param {string} theme - 'light' or 'dark'
-     */
-    setTheme(theme) {
-        const html = document.documentElement;
-        const themeToggle = document.getElementById('themeToggle');
-        
-        // Set theme attribute
-        html.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-
-        // Update button icon
-        if (themeToggle) {
-            const icon = themeToggle.querySelector('i');
-            if (icon) {
-                icon.className = theme === 'dark' ? 'bx bx-sun' : 'bx bx-moon';
-            }
-        }
-
-        // Add transition class for smooth theme change
-        html.style.transition = 'background-color 0.3s ease, color 0.3s ease';
-        setTimeout(() => {
-            html.style.transition = '';
-        }, 300);
-    }
 
     /**
      * Reveal skill cards with a staggered animation when they enter view
@@ -314,6 +260,8 @@ class PortfolioApp {
         // Sidebar toggle
         this.elements.menuToggle?.addEventListener('click', () => this.openSidebar());
         this.elements.sidebarClose?.addEventListener('click', () => this.closeSidebar());
+        // clicking backdrop also closes sidebar
+        this.elements.sidebarBackdrop?.addEventListener('click', () => this.closeSidebar());
 
         // Close sidebar on outside click
         document.addEventListener('click', (e) => {
@@ -346,15 +294,40 @@ class PortfolioApp {
             this.smoothScrollTo('#about');
         });
 
+        // Back-to-top visibility and click
+        const backBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (backBtn) {
+                backBtn.classList.toggle('visible', window.scrollY > 300);
+            }
+        }, { passive: true });
+        backBtn?.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
         // Contact form submission
         this.elements.contactForm?.addEventListener('submit', (e) => this.handleFormSubmit(e));
 
-        // View Project buttons
-        document.addEventListener('click', (e) => {
-            const viewBtn = e.target.closest('.view-project');
-            if (viewBtn) {
-                const projectId = viewBtn.getAttribute('data-project');
-                this.handleProjectView(projectId);
+        // Build search index on page load
+        this.buildSearchIndex();
+
+        // Search box behavior with fuzzy matching
+        const performSearch = () => {
+            const query = this.elements.siteSearch?.value.trim().toLowerCase();
+            if (query.length > 0) {
+                const results = this.fuzzySearch(query);
+                if (results.length > 0) {
+                    const topResult = results[0];
+                    this.smoothScrollTo('#' + topResult.sectionId);
+                } else {
+                    alert('No results found for "' + query + '"');
+                }
+            }
+        };
+        this.elements.searchBtn?.addEventListener('click', performSearch);
+        this.elements.siteSearch?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
             }
         });
 
@@ -387,6 +360,13 @@ class PortfolioApp {
             header.style.boxShadow = scrollProgress > 0.1 
                 ? `0 4px 20px rgba(0, 0, 0, ${scrollProgress * 0.4})` 
                 : 'none';
+
+            // update reading progress bar
+            const prog = document.getElementById('reading-progress');
+            if (prog) {
+                const percent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+                prog.style.width = percent + '%';
+            }
             
             ticking = false;
         };
@@ -403,13 +383,16 @@ class PortfolioApp {
 
     /**
      * Video interactions
+     */
     openSidebar() {
         this.elements.sidebar.setAttribute('aria-hidden', 'false');
         this.elements.sidebar.setAttribute('aria-modal', 'true');
+        this.elements.sidebarBackdrop?.setAttribute('aria-hidden', 'false');
         this.elements.menuToggle.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
         this.setInert(document.body, true);
         this.setInert(this.elements.sidebar, false);
+        this.elements.sidebar.classList.add('is-open');
         
         // Focus management
         const firstFocusable = this.getFocusableElements(this.elements.sidebar)[0];
@@ -422,9 +405,11 @@ class PortfolioApp {
     closeSidebar() {
         this.elements.sidebar.setAttribute('aria-hidden', 'true');
         this.elements.sidebar.removeAttribute('aria-modal');
+        this.elements.sidebarBackdrop?.setAttribute('aria-hidden', 'true');
         this.elements.menuToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
         this.setInert(document.body, false);
+        this.elements.sidebar.classList.remove('is-open');
         
         // Return focus to menu button
         this.elements.menuToggle?.focus();
@@ -1110,9 +1095,21 @@ class PortfolioApp {
             
             // Check if EmailJS is configured
             if (!this.emailServiceID || this.emailServiceID === 'YOUR_SERVICE_ID_HERE') {
-                this.elements.formStatus.textContent = 'Email service not configured. Please contact via email.';
-                this.elements.formStatus.className = 'form-status-error';
-                console.warn('EmailJS not configured. Add your credentials to initEmailJS()');
+                // Fallback: Use mailto links
+                const email = 'saaebkirkuk@gmail.com';
+                const fullName = form.querySelector('#fullName').value;
+                const userEmail = form.querySelector('#email').value;
+                const message = form.querySelector('#message').value;
+                const subject = encodeURIComponent(`Portfolio Inquiry from ${fullName}`);
+                const body = encodeURIComponent(`From: ${fullName}\nEmail: ${userEmail}\n\n${message}`);
+                
+                this.elements.formStatus.textContent = 'Opening your email client. Please send your message to saaebkirkuk@gmail.com';
+                this.elements.formStatus.className = 'form-status-warning';
+                
+                // Open mailto link
+                window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+                
+                const submitBtn = form.querySelector('.btn-submit');
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('btn-loading');
@@ -1239,6 +1236,172 @@ class PortfolioApp {
         } else {
             console.warn('Project link not found for:', projectId);
         }
+    }
+
+    /**
+     * Initialize IntersectionObserver to highlight active navigation link
+     */
+    initActiveNav() {
+        if (!('IntersectionObserver' in window)) return;
+        const sections = document.querySelectorAll('section[id]');
+        const options = { rootMargin: '-40% 0px -55% 0px', threshold: 0 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    const links = document.querySelectorAll('.sidebar-nav a');
+                    links.forEach(a => a.classList.remove('active'));
+                    const match = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (match) match.classList.add('active');
+                }
+            });
+        }, options);
+        sections.forEach(sec => observer.observe(sec));
+    }
+
+    /**
+     * Typed text effect under hero description
+     */
+    initTypedText() {
+        const target = document.getElementById('typed-text');
+        if (!target) return;
+        const phrases = ['Front-end Developer', 'Game Developer', 'Software Developer', 'Web Developer','Basic DSA programmer'];
+        if (this.state.isReducedMotion) {
+            target.textContent = phrases[0];
+            return;
+        }
+        let phraseIdx = 0;
+        let charIdx = 0;
+        const type = () => {
+            const current = phrases[phraseIdx];
+            if (charIdx < current.length) {
+                target.textContent += current[charIdx++];
+                setTimeout(type, 90);
+            } else {
+                setTimeout(() => {
+                    target.textContent = '';
+                    charIdx = 0;
+                    phraseIdx = (phraseIdx + 1) % phrases.length;
+                    type();
+                }, 1200);
+            }
+        };
+        type();
+    }
+
+    /**
+     * Filter blog posts by category in blog.html
+     */
+    initBlogFilter() {
+        const buttons = document.querySelectorAll('.blog-filter-btn');
+        const posts = document.querySelectorAll('.blog-card.blog-post');
+        if (!buttons.length || !posts.length) return;
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const category = btn.dataset.category;
+                posts.forEach(post => {
+                    if (category === 'all' || post.dataset.category === category) {
+                        post.classList.remove('hidden');
+                    } else {
+                        post.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    }
+
+    /**
+     * Add tooltips to skill bars for extra context.
+     */
+    initSkillTooltips() {
+        const items = document.querySelectorAll('.skill-item');
+        items.forEach(item => {
+            const labelEl = item.querySelector('.skill-label');
+            const levelEl = item.querySelector('.skill-level');
+            const bar = item.querySelector('.skill-bar');
+            if (!bar) return;
+            let text = '';
+            if (labelEl) text += labelEl.textContent.trim();
+            if (levelEl) text += ' – ' + levelEl.textContent.trim();
+            const prog = bar.querySelector('.skill-progress');
+            if (prog && prog.getAttribute('aria-label')) {
+                text = prog.getAttribute('aria-label');
+            }
+            if (text) {
+                bar.setAttribute('data-tooltip', text);
+                bar.setAttribute('title', text);
+            }
+        });
+    }
+
+    /**
+     * Build a search index from page content
+     */
+    buildSearchIndex() {
+        this.searchIndex = [];
+        const sections = document.querySelectorAll('[id]');
+        sections.forEach(section => {
+            const text = section.textContent.toLowerCase();
+            const title = section.querySelector('h1, h2, h3, h4, h5, h6')?.textContent || '';
+            this.searchIndex.push({
+                sectionId: section.id,
+                text: text,
+                title: title.toLowerCase(),
+                keywords: this.extractKeywords(text)
+            });
+        });
+    }
+
+    /**
+     * Extract keywords from text
+     */
+    extractKeywords(text) {
+        return text
+            .split(/\s+/)
+            .filter(word => word.length > 2)
+            .slice(0, 20);
+    }
+
+    /**
+     * Fuzzy search algorithm - finds best matching sections
+     */
+    fuzzySearch(query) {
+        const results = [];
+        const queryWords = query.split(/\s+/).filter(w => w.length > 0);
+
+        this.searchIndex.forEach(item => {
+            let score = 0;
+
+            // Check title matches (higher priority)
+            queryWords.forEach(word => {
+                if (item.title.includes(word)) {
+                    score += 100;
+                }
+            });
+
+            // Check keyword matches
+            queryWords.forEach(word => {
+                const keywordMatches = item.keywords.filter(k => k.includes(word)).length;
+                score += keywordMatches * 10;
+            });
+
+            // Check general text (lower priority)
+            queryWords.forEach(word => {
+                const textIndex = item.text.indexOf(word);
+                if (textIndex !== -1) {
+                    score += 1;
+                }
+            });
+
+            if (score > 0) {
+                results.push({ ...item, score });
+            }
+        });
+
+        // Sort by score descending
+        return results.sort((a, b) => b.score - a.score);
     }
 
     /**
