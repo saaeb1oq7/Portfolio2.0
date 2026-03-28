@@ -1290,7 +1290,7 @@ class PortfolioApp {
     }
 
     /**
-     * Filter blog posts by category in blog.html
+     * Filter blog posts by category in blog/index.html
      */
     initBlogFilter() {
         const buttons = document.querySelectorAll('.blog-filter-btn');

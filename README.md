@@ -1,4 +1,4 @@
-# Saaeb Saad — Portfolio
+# Saaeb Saad ï¿½ Portfolio
 
 [![Live Demo](https://img.shields.io/badge/demo-saaeb.netlify.app-blue)](https://saaeb.netlify.app)  [![GitHub](https://img.shields.io/badge/repo-Portfolio2.0-brightgreen)](https://github.com/saaeb1oq7/Portfolio2.0)
 
@@ -53,16 +53,17 @@ The site is published on Netlify at **https://saaeb.netlify.app** and via GitHub
 | File | Purpose |
 |------|---------|
 | `index.html` | Main portfolio page (Home, About, Education, Blog, Testimonials, Projects, Skills, Contact) |
-| `blog.html` | Blog index with category filter |
-| `blog-java-game.html` | Post: Building My First Java Game |
-| `blog-responsive.html` | Post: Frontend Best Practices – Responsive Design |
-| `blog-python.html` | Post: Python for Problem Solving |
-| `blog-ciphers-ui.html` | Post: UI/UX Design in Ciphers Please |
-| `project1.html` | Project detail: Java Repository |
-| `project2.html` | Project detail: Interactive Web Application |
-| `project3.html` | Project detail: Ciphers-Please Game |
-| `privacy.html` | Privacy Policy |
-| `terms.html` | Terms of Use |
+| `blog/index.html` | Blog index with category filter |
+| `blog/index.html` | Blog index with category filter |
+| `blog/java-game.html` | Post: Building My First Java Game |
+| `blog/responsive.html` | Post: Frontend Best Practices â€“ Responsive Design |
+| `blog/python.html` | Post: Python for Problem Solving |
+| `blog/ciphers-ui.html` | Post: UI/UX Design in Ciphers Please |
+| `projects/project1.html` | Project detail: Java Repository |
+| `projects/project2.html` | Project detail: Interactive Web Application |
+| `projects/project3.html` | Project detail: Ciphers-Please Game |
+| `pages/privacy.html` | Privacy Policy |
+| `pages/terms.html` | Terms of Use |
 
 ## Tech Stack
 - HTML5
@@ -80,14 +81,20 @@ The site is published on Netlify at **https://saaeb.netlify.app** and via GitHub
 ## Project Structure
 ```
 NewPortfolio/
-+-- index.html            # Main page
-+-- blog.html             # Blog index
-+-- blog-*.html           # Individual blog posts (4 files)
-+-- project1.html         # Java Repository detail
-+-- project2.html         # Interactive Web App detail
-+-- project3.html         # Ciphers-Please detail
-+-- privacy.html
-+-- terms.html
++-- index.html                    # Main page
++-- blog/                         # Blog index & posts
+    +-- index.html                # Blog listing with filters
+    +-- java-game.html            # Blog post
+    +-- responsive.html           # Blog post
+    +-- python.html               # Blog post
+    +-- ciphers-ui.html           # Blog post
++-- projects/                     # Project detail pages
+    +-- project1.html
+    +-- project2.html
+    +-- project3.html
++-- pages/                        # Static policy/legal pages
+    +-- privacy.html
+    +-- terms.html
 +-- style.css
 +-- app.js
 +-- service-worker.js

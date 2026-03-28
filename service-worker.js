@@ -15,7 +15,22 @@ const STATIC_ASSETS = [
     '/app.js',
     '/manifest.json',
     '/robots.txt',
-    '/Images/cropped_circle_image.png'
+    '/Images/cropped_circle_image.png',
+    // blog section
+    '/blog/',
+    '/blog/index.html',
+    '/blog/java-game.html',
+    '/blog/responsive.html',
+    '/blog/python.html',
+    '/blog/ciphers-ui.html',
+    // projects section
+    '/projects/',
+    '/projects/project1.html',
+    '/projects/project2.html',
+    '/projects/project3.html',
+    // static policies
+    '/pages/privacy.html',
+    '/pages/terms.html'
 ];
 
 // Video files to cache selectively

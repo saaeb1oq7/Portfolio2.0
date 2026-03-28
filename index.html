@@ -145,7 +145,7 @@
                     <li><a href="index.html#projects">Projects</a></li>
                     <li><a href="index.html#skills">Skills</a></li>
                     <li><a href="index.html#education">Education</a></li>
-                    <li><a href="index.html#blog">Blog</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
                     <li><a href="index.html#testimonials">Testimonials</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
                 </ul>
@@ -307,48 +307,40 @@
             <section id="blog" class="section blog-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
                 <h2 class="section-title autoDisplay">Blog & Case Studies</h2>
                 <div class="blog-preview-grid">
-                    <div class="blog-card">
-                        <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
-                        <span class="blog-tag">Tutorial</span>
-                        <h3 class="blog-title">Understanding CSS Grid</h3>
-                        <span class="blog-date">March 1, 2025</span>
-                        <a href="blog.html" class="blog-read-more">Read More</a>
-                    </div>
-                    <div class="blog-card autoBlur">
-                        <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
-                        <span class="blog-tag">Project</span>
-                        <h3 class="blog-title">Building a Portfolio Site</h3>
-                        <span class="blog-date">Feb 20, 2025</span>
-                        <a href="blog.html" class="blog-read-more">Read More</a>
-                    </div>
-                    <div class="blog-card autoBlur">
-                        <div class="blog-thumb"><img src="Images/cropped_circle_image.png" alt="Blog thumbnail" loading="lazy"></div>
+                    <div id="preview-java-game" class="blog-card autoBlur">
+                        <div class="blog-thumb"><img src="Images/PythonGame.png" alt="Blog thumbnail" loading="lazy" width="300" height="300" style="display: block; margin: 0 auto 1rem; border-radius: 0%; object-fit: center; align-self: center; padding-top: 0px;"></div>
                         <span class="blog-tag">Game Dev</span>
-                        <h3 class="blog-title">Creating Ciphers-Please UI</h3>
-                        <span class="blog-date">Jan 15, 2025</span>
-                        <a href="blog.html" class="blog-read-more" style="margin-top: 1rem;">Read More</a>
+                        <h3 class="blog-title">Building My first ever Python Game(Pygame)</h3>
+                        <span class="blog-date">April 3rd, 2022</span>
+                        <a href="python-game.html" class="blog-read-more">Read More</a>
+                    </div>
+                    <div id="preview-responsive" class="blog-card autoBlur">
+                        <div class="blog-thumb"><img src="Images/Front End.png" alt="Blog thumbnail" loading="lazy" width="300" height="300" style="display: block; margin: 0 auto 1rem; border-radius: 0%; object-fit: cover; padding-top: 0px;"></div>
+                        <span class="blog-tag">Frontend</span>
+                        <h3 class="blog-title">Frontend Best Practices: Responsive Design Patterns</h3>
+                        <span class="blog-date">June 23rd, 2025</span>
+                        <a href="responsive.html" class="blog-read-more">Read More</a>
+                    </div>
+                    <div id="preview-python" class="blog-card autoBlur">
+                        <div class="blog-thumb"><img src="Images/Python-GIthub.png" alt="Blog thumbnail" loading="lazy" width="300" height="300" style="display: block; margin: 0 auto 1rem; border-radius: 0%; object-fit: cover;"></div>
+                        <span class="blog-tag">Python</span>
+                        <h3 class="blog-title">Python for Problem Solving: A Practical Guide</h3>
+                        <span class="blog-date">March 11th, 2026</span>
+                        <a href="python.html" class="blog-read-more">Read More</a>
                     </div>
                 </div>
-                <p><a href="blog.html" class="btn btn-primary">View All Posts</a></p>
+                <p><a href="blog/index.html" class="btn btn-primary">View All Posts</a></p>
             </section>
 
             <section id="testimonials" class="section testimonials-section" style="content-visibility: auto; contain-intrinsic-size: 0 500px;">
                 <h2 class="section-title autoDisplay">Testimonials</h2>
                 <div class="testimonials-grid">
                     <div class="testimonial-card autoBlur">
-                        <p class="testimonial-text">"Saaeb is an exceptional problem-solver with deep technical knowledge. His ability to grasp complex concepts quickly is impressive for his age."</p>
+                        <p class="testimonial-text">"Saaeb is always keen to learn new concepts. He always try to understand new concepts from his heart. He tries to explore new concepts always."</p>
                         <div class="testimonial-stars">★★★★★</div>
                         <p class="testimonial-author"><strong>— Java Training Instructor, Codingal</strong></p>
                     </div>
                     <div class="testimonial-card autoBlur">
-                        <p class="testimonial-text">"His UI work on Ciphers Please was outstanding. He brought creative solutions and applied solid UX principles to enhance user engagement."</p>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-author"><strong>— Game Development Team Lead</strong></p>
-                    </div>
-                    <div class="testimonial-card autoBlur">
-                        <p class="testimonial-text">"Saaeb demonstrates strong commitment to self-improvement. He's always eager to learn new frameworks and technologies, making him a valuable team member."</p>
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-author"><strong>— Computer Science Teacher, RTS School</strong></p>
                     </div>
                 </div>
             </section>
@@ -363,7 +355,7 @@
                                 A Repository of Java Programs including simple and complex programs with comments for learning and reference purposes. -- Codingal
                             </p>
                             <!-- CUSTOMIZE: Change data-project="project1" to link to your project, change button text -->
-                            <a class="btn btn-primary" href="project1.html">View Project</a>
+                            <a class="btn btn-primary" href="projects/project1.html">View Project</a>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
@@ -379,7 +371,7 @@
                             <h3 class="project-title">Interactive <span class="text-gradient">Web</span> Application</h3>
                             <p class="project-description">A Website showcasing industrial school studies in Iraq with books and lieutenant. Making it easier to get useful information about industrial studies before entering.</p>
                             <!-- CUSTOMIZE: Change data-project="project3" to link to your project, change button text -->
-                            <a class="btn btn-primary" href="project2.html">View Project</a>
+                            <a class="btn btn-primary" href="projects/project2.html">View Project</a>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
@@ -394,7 +386,7 @@
                         <div class="project-info fadeInRight">
                             <h3 class="project-title">Ciphers-<span class="text-gradient">Please</span> </h3>
                             <p class="project-description">A Game About Ciphering and unCiphering messages I worked as a UI developer in this game, but I had Exams so I didn't contribute well enough.</p>
-                            <a class="btn btn-primary" href="project3.html">View Project</a>
+                            <a class="btn btn-primary" href="projects/project3.html">View Project</a>
                         </div>
                         
                         <div class="project-visual" data-stagger-group="projects">
@@ -644,7 +636,7 @@
         </main>
 
         <footer class="site-footer">
-            <p>Copyrights © 2025 <span class="text-gradient">Saaeb Saad</span>. All rights <span class="text-gradient">reserved</span>.</p>
+            <p>Copyrights © 2026 <span class="text-gradient">Saaeb Saad</span>. All rights <span class="text-gradient">reserved</span>.</p>
             <!-- <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Use</a></p> -->
         </footer>
     </div>
