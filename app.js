@@ -1225,7 +1225,7 @@ class PortfolioApp {
         // Map project IDs to URLs or external links
         const projectLinks = {
             project1: 'https://github.com/saaeb1oq7/Java',
-            project2: 'https://kis-web-tau.vercel.app',
+            project2: 'https://kvc-web.vercel.app',
             project3: 'https://isaacsand.itch.io/ciphers-please'
             // Add more projects as needed
         };
